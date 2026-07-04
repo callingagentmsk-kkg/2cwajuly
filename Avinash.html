@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin Panel | CWA SCIENCE CLASSES</title>
+
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+
+<!-- ============ LOGIN SCREEN ============ -->
+<div class="admin-login-wrap" id="aLoginWrap">
+  <div class="admin-login-card">
+    <img class="a-logo" src="assets/img/logo.webp" alt="CWA">
+    <h1>Admin Panel</h1>
+    <p class="sub">CWA SCIENCE CLASSES — Concept with Abhishek</p>
+    <div class="a-login-error" id="aLoginError"></div>
+    <form id="aLoginForm">
+      <div class="a-field">
+        <label>Username</label>
+        <input type="text" id="aUsername" autocomplete="username" required>
+      </div>
+      <div class="a-field">
+        <label>Password</label>
+        <input type="password" id="aPassword" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="a-btn a-btn-primary a-btn-block" id="aLoginBtn"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ ADMIN APP SHELL ============ -->
+<div class="admin-shell" id="aShell">
+  <aside class="a-sidebar" id="aSidebar">
+    <div class="a-sidebar-brand">
+      <img src="assets/img/logo.webp" alt="CWA">
+      <div><b>CWA Admin</b><span>Control Panel</span></div>
+    </div>
+    <nav class="a-nav">
+      <div class="a-nav-item active" data-panel="dashboard"><i class="fa-solid fa-gauge"></i> Dashboard</div>
+      <div class="a-nav-item" data-panel="hero"><i class="fa-solid fa-images"></i> Hero Slider</div>
+      <div class="a-nav-item" data-panel="notices"><i class="fa-solid fa-bullhorn"></i> Notice Marquee</div>
+      <div class="a-nav-item" data-panel="about"><i class="fa-solid fa-chalkboard-user"></i> About / Mentor</div>
+      <div class="a-nav-item" data-panel="batches"><i class="fa-solid fa-layer-group"></i> Batches</div>
+      <div class="a-nav-item" data-panel="settings"><i class="fa-solid fa-gear"></i> Site Settings</div>
+      <div class="a-nav-item" data-panel="terms"><i class="fa-solid fa-file-contract"></i> Terms & Policy</div>
+      <div class="a-nav-item" data-panel="students"><i class="fa-solid fa-user-graduate"></i> Student Data</div>
+      <div class="a-nav-item" data-panel="results"><i class="fa-solid fa-chart-simple"></i> Student Results</div>
+      <div class="a-nav-item" data-panel="login-settings"><i class="fa-solid fa-key"></i> Change Login</div>
+    </nav>
+    <div class="a-sidebar-footer">
+      <button class="a-btn a-btn-outline" id="aLogoutBtn" style="color:#fff; border-color:rgba(255,255,255,0.2);"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+  </aside>
+
+  <main class="a-main">
+    <div class="a-topbar">
+      <div class="a-flex">
+        <button class="a-hamburger" id="aHamburger"><i class="fa-solid fa-bars"></i></button>
+        <h2 id="aTopbarTitle">Dashboard</h2>
+      </div>
+      <div class="a-user"><i class="fa-solid fa-circle-user" style="font-size:1.3rem;"></i> <span id="aUserName">AVINASH</span></div>
+    </div>
+    <div class="a-content">
+      <div class="a-local-banner" id="aLocalBanner">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>LOCAL MODE — Supabase abhi connect nahi hai. Yahan kiye gaye changes sirf iss browser mein save honge, live public site par nahi dikhenge jab tak Supabase connect na ho.</span>
+      </div>
+
+      <div class="a-panel active" id="panel-dashboard"></div>
+      <div class="a-panel" id="panel-hero"></div>
+      <div class="a-panel" id="panel-notices"></div>
+      <div class="a-panel" id="panel-about"></div>
+      <div class="a-panel" id="panel-batches"></div>
+      <div class="a-panel" id="panel-settings"></div>
+      <div class="a-panel" id="panel-terms"></div>
+      <div class="a-panel" id="panel-students"></div>
+      <div class="a-panel" id="panel-results"></div>
+      <div class="a-panel" id="panel-login-settings"></div>
+    </div>
+  </main>
+</div>
+
+<!-- ============ MODAL ============ -->
+<div class="a-modal-overlay" id="aModalOverlay">
+  <div class="a-modal" id="aModalBody"></div>
+</div>
+
+<!-- ============ TOASTS ============ -->
+<div class="a-toast-wrap" id="aToastWrap"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/site-data.js"></script>
+<script src="js/batches-data.js"></script>
+<script src="js/admin-db.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
