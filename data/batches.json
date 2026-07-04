@@ -1,0 +1,780 @@
+{
+  "batches": [
+    {
+      "id": "class9",
+      "class": "9",
+      "title": "Class 9 PCM",
+      "subtitle": "Bihar Board | NCERT Based",
+      "color": "#6C63FF",
+      "icon": "seedling",
+      "subjects": [
+        {
+          "name": "Physics",
+          "icon": "atom",
+          "chapters": [
+            {
+              "title": "Motion",
+              "youtube": "1Mf8plOjlbA",
+              "duration": "1:48:24",
+              "description": "Motion - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class9-physics-ch1-motion.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class9-physics-ch1-motion.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "Force and Laws of Motion",
+              "youtube": "OlTcIMIGQEE",
+              "duration": "1:32:10",
+              "description": "Force and Laws of Motion - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class9-physics-ch2-force-laws-of-motion.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class9-physics-ch2-force-laws-of-motion.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "Gravitation",
+              "youtube": "15ItVrHUX4k",
+              "duration": "1:41:05",
+              "description": "Gravitation - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class9-physics-ch3-gravitation.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class9-physics-ch3-gravitation.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Chemistry",
+          "icon": "flask",
+          "chapters": [
+            {
+              "title": "Matter in Our Surroundings",
+              "youtube": "bmzDsWMSCTk",
+              "duration": "1:55:30",
+              "description": "Matter in Our Surroundings - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class9-chemistry-ch1-matter-in-our-surroundings.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class9-chemistry-ch1-matter-in-our-surroundings.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "Is Matter Around Us Pure",
+              "youtube": "uBxkD8kiJpE",
+              "duration": "2:05:12",
+              "description": "Is Matter Around Us Pure - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class9-chemistry-ch2-is-matter-around-us-pure.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class9-chemistry-ch2-is-matter-around-us-pure.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "Atoms and Molecules",
+              "youtube": "YLXMhj2_scc",
+              "duration": "1:38:47",
+              "description": "Atoms and Molecules - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class9-chemistry-ch3-atoms-and-molecules.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class9-chemistry-ch3-atoms-and-molecules.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Maths",
+          "icon": "square-root-variable",
+          "chapters": [
+            {
+              "title": "Number Systems",
+              "youtube": "oSUj-RCL5pM",
+              "duration": "2:15:00",
+              "description": "Number Systems - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class9-maths-ch1-number-systems.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class9-maths-ch1-number-systems.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "Polynomials",
+              "youtube": "-XawEiIVI44",
+              "duration": "2:30:45",
+              "description": "Polynomials - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class9-maths-ch2-polynomials.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class9-maths-ch2-polynomials.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "Coordinate Geometry",
+              "youtube": "peUqu8_HYII",
+              "duration": "1:20:18",
+              "description": "Coordinate Geometry - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class9-maths-ch3-coordinate-geometry.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class9-maths-ch3-coordinate-geometry.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "image_url": "",
+      "offer_text": "",
+      "price": "",
+      "payment_link": ""
+    },
+    {
+      "id": "class10",
+      "class": "10",
+      "title": "Class 10 PCM",
+      "subtitle": "Bihar Board | Matric Batch",
+      "color": "#FF6B6B",
+      "icon": "graduation-cap",
+      "subjects": [
+        {
+          "name": "Physics",
+          "icon": "atom",
+          "chapters": [
+            {
+              "title": "Light - Reflection and Refraction",
+              "youtube": "EVQxyBCDKAw",
+              "duration": "2:10:33",
+              "description": "Light - Reflection and Refraction - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class10-physics-ch1-light-reflection-refraction.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class10-physics-ch1-light-reflection-refraction.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "The Human Eye and the Colourful World",
+              "youtube": "6L01ThI0o_s",
+              "duration": "1:45:20",
+              "description": "The Human Eye and the Colourful World - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class10-physics-ch2-human-eye.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class10-physics-ch2-human-eye.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "Electricity",
+              "youtube": "e5s8cqMtTmY",
+              "duration": "2:25:40",
+              "description": "Electricity - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class10-physics-ch3-electricity.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class10-physics-ch3-electricity.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Chemistry",
+          "icon": "flask",
+          "chapters": [
+            {
+              "title": "Chemical Reactions and Equations",
+              "youtube": "rf_sxTsPTI0",
+              "duration": "1:56:05",
+              "description": "Chemical Reactions and Equations - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class10-chemistry-ch1-chemical-reactions-equations.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class10-chemistry-ch1-chemical-reactions-equations.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "Acids, Bases and Salts",
+              "youtube": "rfSWgkEGF0g",
+              "duration": "2:02:15",
+              "description": "Acids, Bases and Salts - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class10-chemistry-ch2-acids-bases-salts.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class10-chemistry-ch2-acids-bases-salts.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "Carbon and its Compounds",
+              "youtube": "diROxxtMTr4",
+              "duration": "2:18:50",
+              "description": "Carbon and its Compounds - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class10-chemistry-ch3-carbon-and-its-compounds.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class10-chemistry-ch3-carbon-and-its-compounds.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Maths",
+          "icon": "square-root-variable",
+          "chapters": [
+            {
+              "title": "Real Numbers",
+              "youtube": "O6v26R63N84",
+              "duration": "1:47:28",
+              "description": "Real Numbers - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class10-maths-ch1-real-numbers.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class10-maths-ch1-real-numbers.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "Polynomials",
+              "youtube": "S0ZRBYp6Exg",
+              "duration": "1:55:00",
+              "description": "Polynomials - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class10-maths-ch2-polynomials.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class10-maths-ch2-polynomials.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "Pair of Linear Equations in Two Variables",
+              "youtube": "muMbUcRyrz0",
+              "duration": "2:08:12",
+              "description": "Pair of Linear Equations in Two Variables - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class10-maths-ch3-pair-of-linear-equations.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class10-maths-ch3-pair-of-linear-equations.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "image_url": "",
+      "offer_text": "",
+      "price": "",
+      "payment_link": ""
+    },
+    {
+      "id": "class11",
+      "class": "11",
+      "title": "Class 11 PCM",
+      "subtitle": "Bihar Board | Science Stream",
+      "color": "#00C2A8",
+      "icon": "flask-vial",
+      "subjects": [
+        {
+          "name": "Physics",
+          "icon": "atom",
+          "chapters": [
+            {
+              "title": "Units and Measurements",
+              "youtube": "Cx9W5sNzfAM",
+              "duration": "1:11:39",
+              "description": "Units and Measurements - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class11-physics-ch1-units-and-measurements.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class11-physics-ch1-units-and-measurements.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "Motion in a Straight Line",
+              "youtube": "3ijipy9p6mE",
+              "duration": "1:38:22",
+              "description": "Motion in a Straight Line - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class11-physics-ch2-motion-in-a-straight-line.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class11-physics-ch2-motion-in-a-straight-line.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "Laws of Motion",
+              "youtube": "GOSL5RiIDsM",
+              "duration": "1:52:47",
+              "description": "Laws of Motion - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class11-physics-ch3-laws-of-motion.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class11-physics-ch3-laws-of-motion.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Chemistry",
+          "icon": "flask",
+          "chapters": [
+            {
+              "title": "Some Basic Concepts of Chemistry",
+              "youtube": "_rdZJCmhgKM",
+              "duration": "2:12:00",
+              "description": "Some Basic Concepts of Chemistry - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class11-chemistry-ch1-basic-concepts.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class11-chemistry-ch1-basic-concepts.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "Structure of Atom",
+              "youtube": "_ixMD96MjeY",
+              "duration": "2:05:33",
+              "description": "Structure of Atom - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class11-chemistry-ch2-structure-of-atom.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class11-chemistry-ch2-structure-of-atom.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "Classification of Elements & Periodicity",
+              "youtube": "azb-dw3kon4",
+              "duration": "1:48:10",
+              "description": "Classification of Elements & Periodicity - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class11-chemistry-ch3-classification-of-elements.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class11-chemistry-ch3-classification-of-elements.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Maths",
+          "icon": "square-root-variable",
+          "chapters": [
+            {
+              "title": "Sets",
+              "youtube": "wXHrdAlK9BA",
+              "duration": "1:35:00",
+              "description": "Sets - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class11-maths-ch1-sets.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class11-maths-ch1-sets.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "Relations and Functions",
+              "youtube": "cc_pl0jJ6SE",
+              "duration": "1:42:18",
+              "description": "Relations and Functions - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class11-maths-ch2-relations-and-functions.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class11-maths-ch2-relations-and-functions.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "Trigonometric Functions",
+              "youtube": "jzJf57S28X8",
+              "duration": "2:20:05",
+              "description": "Trigonometric Functions - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class11-maths-ch3-trigonometric-functions.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class11-maths-ch3-trigonometric-functions.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "image_url": "",
+      "offer_text": "",
+      "price": "",
+      "payment_link": ""
+    },
+    {
+      "id": "class12",
+      "class": "12",
+      "title": "Class 12 PCM",
+      "subtitle": "Bihar Board | Board Exam Batch",
+      "color": "#FFA630",
+      "icon": "trophy",
+      "subjects": [
+        {
+          "name": "Physics",
+          "icon": "atom",
+          "chapters": [
+            {
+              "title": "Electric Charges and Fields",
+              "youtube": "xjQ5OeqM8Ug",
+              "duration": "1:58:44",
+              "description": "Electric Charges and Fields - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class12-physics-ch1-electric-charges-and-fields.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class12-physics-ch1-electric-charges-and-fields.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "Electrostatic Potential and Capacitance",
+              "youtube": "0cKXXDyI43I",
+              "duration": "2:15:20",
+              "description": "Electrostatic Potential and Capacitance - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class12-physics-ch2-electrostatic-potential.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class12-physics-ch2-electrostatic-potential.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "Current Electricity",
+              "youtube": "HprpNBXVA8s",
+              "duration": "2:30:10",
+              "description": "Current Electricity - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class12-physics-ch3-current-electricity.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class12-physics-ch3-current-electricity.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Chemistry",
+          "icon": "flask",
+          "chapters": [
+            {
+              "title": "Solutions",
+              "youtube": "tuO9Vmz496w",
+              "duration": "2:08:00",
+              "description": "Solutions - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class12-chemistry-ch1-solutions.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class12-chemistry-ch1-solutions.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "Electrochemistry",
+              "youtube": "qtqu3LH-EH8",
+              "duration": "1:55:45",
+              "description": "Electrochemistry - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class12-chemistry-ch2-electrochemistry.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class12-chemistry-ch2-electrochemistry.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "Chemical Kinetics",
+              "youtube": "74m8SRgJ8v0",
+              "duration": "1:47:33",
+              "description": "Chemical Kinetics - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class12-chemistry-ch3-chemical-kinetics.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class12-chemistry-ch3-chemical-kinetics.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Maths",
+          "icon": "square-root-variable",
+          "chapters": [
+            {
+              "title": "Relations and Functions",
+              "youtube": "PHXKDfENOrA",
+              "duration": "1:30:00",
+              "description": "Relations and Functions - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class12-maths-ch1-relations-and-functions.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class12-maths-ch1-relations-and-functions.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "Inverse Trigonometric Functions",
+              "youtube": "LqYYXLlQy18",
+              "duration": "1:27:50",
+              "description": "Inverse Trigonometric Functions - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class12-maths-ch2-inverse-trigonometric-functions.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class12-maths-ch2-inverse-trigonometric-functions.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            },
+            {
+              "title": "Matrices",
+              "youtube": "tBgpbhP7ve4",
+              "duration": "1:38:24",
+              "description": "Matrices - complete notes aur video lecture. Is chapter ko dhyan se padhein aur PDF notes se revision karein.",
+              "resources": [
+                {
+                  "type": "Text Notes (PDF)",
+                  "url": "assets/pdfs/class12-maths-ch3-matrices.pdf",
+                  "description": "Detailed text notes for this chapter."
+                },
+                {
+                  "type": "PPT Notes (PDF)",
+                  "url": "assets/pdfs/class12-maths-ch3-matrices.pdf",
+                  "description": "Slide-style summary notes for quick revision."
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "image_url": "",
+      "offer_text": "",
+      "price": "",
+      "payment_link": ""
+    }
+  ]
+}

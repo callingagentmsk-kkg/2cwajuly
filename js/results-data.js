@@ -1,0 +1,1605 @@
+// Auto-generated weekly test result demo data for CWA SCIENCE CLASSES
+const RESULTS_DATA = {
+  "students": [
+    {
+      "name": "Ravi Kumar",
+      "class": "9",
+      "mobile": "8218196001",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-06",
+          "physics": 17,
+          "chemistry": 17,
+          "maths": 22,
+          "total": 56,
+          "outOf": 75,
+          "percentage": 74.7,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-27",
+          "physics": 22,
+          "chemistry": 17,
+          "maths": 25,
+          "total": 64,
+          "outOf": 75,
+          "percentage": 85.3,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-20",
+          "physics": 17,
+          "chemistry": 21,
+          "maths": 23,
+          "total": 61,
+          "outOf": 75,
+          "percentage": 81.3,
+          "grade": "A"
+        }
+      ]
+    },
+    {
+      "name": "Aarav Singh",
+      "class": "9",
+      "mobile": "8235116155",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-27",
+          "physics": 23,
+          "chemistry": 18,
+          "maths": 14,
+          "total": 55,
+          "outOf": 75,
+          "percentage": 73.3,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-06",
+          "physics": 22,
+          "chemistry": 15,
+          "maths": 20,
+          "total": 57,
+          "outOf": 75,
+          "percentage": 76.0,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-20",
+          "physics": 22,
+          "chemistry": 18,
+          "maths": 24,
+          "total": 64,
+          "outOf": 75,
+          "percentage": 85.3,
+          "grade": "A"
+        }
+      ]
+    },
+    {
+      "name": "Vishal Sharma",
+      "class": "9",
+      "mobile": "8341316475",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-13",
+          "physics": 16,
+          "chemistry": 19,
+          "maths": 19,
+          "total": 54,
+          "outOf": 75,
+          "percentage": 72.0,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-06",
+          "physics": 24,
+          "chemistry": 18,
+          "maths": 25,
+          "total": 67,
+          "outOf": 75,
+          "percentage": 89.3,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-13",
+          "physics": 23,
+          "chemistry": 24,
+          "maths": 16,
+          "total": 63,
+          "outOf": 75,
+          "percentage": 84.0,
+          "grade": "A"
+        }
+      ]
+    },
+    {
+      "name": "Ankit Prasad",
+      "class": "9",
+      "mobile": "9835030564",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-20",
+          "physics": 15,
+          "chemistry": 17,
+          "maths": 23,
+          "total": 55,
+          "outOf": 75,
+          "percentage": 73.3,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-27",
+          "physics": 17,
+          "chemistry": 24,
+          "maths": 21,
+          "total": 62,
+          "outOf": 75,
+          "percentage": 82.7,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-20",
+          "physics": 24,
+          "chemistry": 21,
+          "maths": 16,
+          "total": 61,
+          "outOf": 75,
+          "percentage": 81.3,
+          "grade": "A"
+        }
+      ]
+    },
+    {
+      "name": "Neha Sharma",
+      "class": "9",
+      "mobile": "8969653287",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-13",
+          "physics": 15,
+          "chemistry": 14,
+          "maths": 15,
+          "total": 44,
+          "outOf": 75,
+          "percentage": 58.7,
+          "grade": "C"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-27",
+          "physics": 24,
+          "chemistry": 16,
+          "maths": 24,
+          "total": 64,
+          "outOf": 75,
+          "percentage": 85.3,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-27",
+          "physics": 23,
+          "chemistry": 15,
+          "maths": 20,
+          "total": 58,
+          "outOf": 75,
+          "percentage": 77.3,
+          "grade": "B+"
+        }
+      ]
+    },
+    {
+      "name": "Sunil Prasad",
+      "class": "9",
+      "mobile": "6018451462",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-20",
+          "physics": 21,
+          "chemistry": 14,
+          "maths": 25,
+          "total": 60,
+          "outOf": 75,
+          "percentage": 80.0,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-06",
+          "physics": 22,
+          "chemistry": 16,
+          "maths": 22,
+          "total": 60,
+          "outOf": 75,
+          "percentage": 80.0,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-13",
+          "physics": 24,
+          "chemistry": 18,
+          "maths": 24,
+          "total": 66,
+          "outOf": 75,
+          "percentage": 88.0,
+          "grade": "A"
+        }
+      ]
+    },
+    {
+      "name": "Suraj Yadav",
+      "class": "9",
+      "mobile": "8809570154",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-06",
+          "physics": 17,
+          "chemistry": 14,
+          "maths": 17,
+          "total": 48,
+          "outOf": 75,
+          "percentage": 64.0,
+          "grade": "B"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-06",
+          "physics": 15,
+          "chemistry": 25,
+          "maths": 21,
+          "total": 61,
+          "outOf": 75,
+          "percentage": 81.3,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-27",
+          "physics": 22,
+          "chemistry": 16,
+          "maths": 16,
+          "total": 54,
+          "outOf": 75,
+          "percentage": 72.0,
+          "grade": "B+"
+        }
+      ]
+    },
+    {
+      "name": "Preeti Singh",
+      "class": "9",
+      "mobile": "9963834657",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-13",
+          "physics": 22,
+          "chemistry": 21,
+          "maths": 15,
+          "total": 58,
+          "outOf": 75,
+          "percentage": 77.3,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-06",
+          "physics": 17,
+          "chemistry": 15,
+          "maths": 19,
+          "total": 51,
+          "outOf": 75,
+          "percentage": 68.0,
+          "grade": "B"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-13",
+          "physics": 23,
+          "chemistry": 22,
+          "maths": 17,
+          "total": 62,
+          "outOf": 75,
+          "percentage": 82.7,
+          "grade": "A"
+        }
+      ]
+    },
+    {
+      "name": "Aarav Kumari",
+      "class": "9",
+      "mobile": "8105183473",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-27",
+          "physics": 22,
+          "chemistry": 16,
+          "maths": 25,
+          "total": 63,
+          "outOf": 75,
+          "percentage": 84.0,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-13",
+          "physics": 17,
+          "chemistry": 21,
+          "maths": 20,
+          "total": 58,
+          "outOf": 75,
+          "percentage": 77.3,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-27",
+          "physics": 15,
+          "chemistry": 15,
+          "maths": 24,
+          "total": 54,
+          "outOf": 75,
+          "percentage": 72.0,
+          "grade": "B+"
+        }
+      ]
+    },
+    {
+      "name": "Gaurav Gupta",
+      "class": "9",
+      "mobile": "7106513338",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-13",
+          "physics": 21,
+          "chemistry": 16,
+          "maths": 20,
+          "total": 57,
+          "outOf": 75,
+          "percentage": 76.0,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-06",
+          "physics": 18,
+          "chemistry": 21,
+          "maths": 17,
+          "total": 56,
+          "outOf": 75,
+          "percentage": 74.7,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-06",
+          "physics": 21,
+          "chemistry": 22,
+          "maths": 15,
+          "total": 58,
+          "outOf": 75,
+          "percentage": 77.3,
+          "grade": "B+"
+        }
+      ]
+    },
+    {
+      "name": "Amit Kumar",
+      "class": "10",
+      "mobile": "6267736026",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-27",
+          "physics": 14,
+          "chemistry": 20,
+          "maths": 18,
+          "total": 52,
+          "outOf": 75,
+          "percentage": 69.3,
+          "grade": "B"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-27",
+          "physics": 18,
+          "chemistry": 20,
+          "maths": 25,
+          "total": 63,
+          "outOf": 75,
+          "percentage": 84.0,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-13",
+          "physics": 16,
+          "chemistry": 17,
+          "maths": 18,
+          "total": 51,
+          "outOf": 75,
+          "percentage": 68.0,
+          "grade": "B"
+        }
+      ]
+    },
+    {
+      "name": "Sneha Thakur",
+      "class": "10",
+      "mobile": "8500978820",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-06",
+          "physics": 22,
+          "chemistry": 15,
+          "maths": 16,
+          "total": 53,
+          "outOf": 75,
+          "percentage": 70.7,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-13",
+          "physics": 23,
+          "chemistry": 15,
+          "maths": 24,
+          "total": 62,
+          "outOf": 75,
+          "percentage": 82.7,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-13",
+          "physics": 20,
+          "chemistry": 15,
+          "maths": 23,
+          "total": 58,
+          "outOf": 75,
+          "percentage": 77.3,
+          "grade": "B+"
+        }
+      ]
+    },
+    {
+      "name": "Rekha Thakur",
+      "class": "10",
+      "mobile": "9169985435",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-13",
+          "physics": 17,
+          "chemistry": 18,
+          "maths": 20,
+          "total": 55,
+          "outOf": 75,
+          "percentage": 73.3,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-27",
+          "physics": 24,
+          "chemistry": 24,
+          "maths": 18,
+          "total": 66,
+          "outOf": 75,
+          "percentage": 88.0,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-27",
+          "physics": 19,
+          "chemistry": 15,
+          "maths": 14,
+          "total": 48,
+          "outOf": 75,
+          "percentage": 64.0,
+          "grade": "B"
+        }
+      ]
+    },
+    {
+      "name": "Alka Thakur",
+      "class": "10",
+      "mobile": "8384251354",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-20",
+          "physics": 16,
+          "chemistry": 21,
+          "maths": 22,
+          "total": 59,
+          "outOf": 75,
+          "percentage": 78.7,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-06",
+          "physics": 23,
+          "chemistry": 24,
+          "maths": 22,
+          "total": 69,
+          "outOf": 75,
+          "percentage": 92.0,
+          "grade": "A+"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-06",
+          "physics": 24,
+          "chemistry": 22,
+          "maths": 18,
+          "total": 64,
+          "outOf": 75,
+          "percentage": 85.3,
+          "grade": "A"
+        }
+      ]
+    },
+    {
+      "name": "Neha Verma",
+      "class": "10",
+      "mobile": "9182449353",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-27",
+          "physics": 24,
+          "chemistry": 24,
+          "maths": 18,
+          "total": 66,
+          "outOf": 75,
+          "percentage": 88.0,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-27",
+          "physics": 18,
+          "chemistry": 14,
+          "maths": 15,
+          "total": 47,
+          "outOf": 75,
+          "percentage": 62.7,
+          "grade": "B"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-20",
+          "physics": 18,
+          "chemistry": 14,
+          "maths": 14,
+          "total": 46,
+          "outOf": 75,
+          "percentage": 61.3,
+          "grade": "B"
+        }
+      ]
+    },
+    {
+      "name": "Neha Rai",
+      "class": "10",
+      "mobile": "8786801128",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-13",
+          "physics": 14,
+          "chemistry": 19,
+          "maths": 23,
+          "total": 56,
+          "outOf": 75,
+          "percentage": 74.7,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-20",
+          "physics": 20,
+          "chemistry": 16,
+          "maths": 14,
+          "total": 50,
+          "outOf": 75,
+          "percentage": 66.7,
+          "grade": "B"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-13",
+          "physics": 19,
+          "chemistry": 14,
+          "maths": 19,
+          "total": 52,
+          "outOf": 75,
+          "percentage": 69.3,
+          "grade": "B"
+        }
+      ]
+    },
+    {
+      "name": "Anjali Rai",
+      "class": "10",
+      "mobile": "9869232260",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-27",
+          "physics": 16,
+          "chemistry": 25,
+          "maths": 19,
+          "total": 60,
+          "outOf": 75,
+          "percentage": 80.0,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-20",
+          "physics": 24,
+          "chemistry": 25,
+          "maths": 17,
+          "total": 66,
+          "outOf": 75,
+          "percentage": 88.0,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-27",
+          "physics": 16,
+          "chemistry": 25,
+          "maths": 15,
+          "total": 56,
+          "outOf": 75,
+          "percentage": 74.7,
+          "grade": "B+"
+        }
+      ]
+    },
+    {
+      "name": "Priya Prasad",
+      "class": "10",
+      "mobile": "9754330365",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-20",
+          "physics": 18,
+          "chemistry": 15,
+          "maths": 18,
+          "total": 51,
+          "outOf": 75,
+          "percentage": 68.0,
+          "grade": "B"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-20",
+          "physics": 24,
+          "chemistry": 22,
+          "maths": 20,
+          "total": 66,
+          "outOf": 75,
+          "percentage": 88.0,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-13",
+          "physics": 14,
+          "chemistry": 15,
+          "maths": 18,
+          "total": 47,
+          "outOf": 75,
+          "percentage": 62.7,
+          "grade": "B"
+        }
+      ]
+    },
+    {
+      "name": "Rekha Verma",
+      "class": "10",
+      "mobile": "9965569816",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-06",
+          "physics": 23,
+          "chemistry": 17,
+          "maths": 18,
+          "total": 58,
+          "outOf": 75,
+          "percentage": 77.3,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-13",
+          "physics": 25,
+          "chemistry": 20,
+          "maths": 14,
+          "total": 59,
+          "outOf": 75,
+          "percentage": 78.7,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-20",
+          "physics": 19,
+          "chemistry": 20,
+          "maths": 15,
+          "total": 54,
+          "outOf": 75,
+          "percentage": 72.0,
+          "grade": "B+"
+        }
+      ]
+    },
+    {
+      "name": "Alka Yadav",
+      "class": "10",
+      "mobile": "8484656482",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-27",
+          "physics": 17,
+          "chemistry": 20,
+          "maths": 24,
+          "total": 61,
+          "outOf": 75,
+          "percentage": 81.3,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-20",
+          "physics": 24,
+          "chemistry": 25,
+          "maths": 16,
+          "total": 65,
+          "outOf": 75,
+          "percentage": 86.7,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-20",
+          "physics": 20,
+          "chemistry": 22,
+          "maths": 14,
+          "total": 56,
+          "outOf": 75,
+          "percentage": 74.7,
+          "grade": "B+"
+        }
+      ]
+    },
+    {
+      "name": "Manish Sharma",
+      "class": "11",
+      "mobile": "8577738721",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-20",
+          "physics": 18,
+          "chemistry": 22,
+          "maths": 24,
+          "total": 64,
+          "outOf": 75,
+          "percentage": 85.3,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-20",
+          "physics": 15,
+          "chemistry": 17,
+          "maths": 24,
+          "total": 56,
+          "outOf": 75,
+          "percentage": 74.7,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-06",
+          "physics": 17,
+          "chemistry": 17,
+          "maths": 16,
+          "total": 50,
+          "outOf": 75,
+          "percentage": 66.7,
+          "grade": "B"
+        }
+      ]
+    },
+    {
+      "name": "Priya Sharma",
+      "class": "11",
+      "mobile": "7769367632",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-06",
+          "physics": 24,
+          "chemistry": 25,
+          "maths": 14,
+          "total": 63,
+          "outOf": 75,
+          "percentage": 84.0,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-27",
+          "physics": 20,
+          "chemistry": 17,
+          "maths": 16,
+          "total": 53,
+          "outOf": 75,
+          "percentage": 70.7,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-06",
+          "physics": 14,
+          "chemistry": 22,
+          "maths": 17,
+          "total": 53,
+          "outOf": 75,
+          "percentage": 70.7,
+          "grade": "B+"
+        }
+      ]
+    },
+    {
+      "name": "Payal Singh",
+      "class": "11",
+      "mobile": "6957986872",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-20",
+          "physics": 25,
+          "chemistry": 21,
+          "maths": 21,
+          "total": 67,
+          "outOf": 75,
+          "percentage": 89.3,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-27",
+          "physics": 17,
+          "chemistry": 24,
+          "maths": 18,
+          "total": 59,
+          "outOf": 75,
+          "percentage": 78.7,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-27",
+          "physics": 24,
+          "chemistry": 17,
+          "maths": 18,
+          "total": 59,
+          "outOf": 75,
+          "percentage": 78.7,
+          "grade": "B+"
+        }
+      ]
+    },
+    {
+      "name": "Aman Chaudhary",
+      "class": "11",
+      "mobile": "9455812236",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-13",
+          "physics": 25,
+          "chemistry": 16,
+          "maths": 25,
+          "total": 66,
+          "outOf": 75,
+          "percentage": 88.0,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-20",
+          "physics": 15,
+          "chemistry": 20,
+          "maths": 20,
+          "total": 55,
+          "outOf": 75,
+          "percentage": 73.3,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-06",
+          "physics": 22,
+          "chemistry": 21,
+          "maths": 20,
+          "total": 63,
+          "outOf": 75,
+          "percentage": 84.0,
+          "grade": "A"
+        }
+      ]
+    },
+    {
+      "name": "Simran Gupta",
+      "class": "11",
+      "mobile": "9909670546",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-13",
+          "physics": 20,
+          "chemistry": 22,
+          "maths": 25,
+          "total": 67,
+          "outOf": 75,
+          "percentage": 89.3,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-27",
+          "physics": 21,
+          "chemistry": 17,
+          "maths": 18,
+          "total": 56,
+          "outOf": 75,
+          "percentage": 74.7,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-20",
+          "physics": 21,
+          "chemistry": 14,
+          "maths": 20,
+          "total": 55,
+          "outOf": 75,
+          "percentage": 73.3,
+          "grade": "B+"
+        }
+      ]
+    },
+    {
+      "name": "Muskan Chaudhary",
+      "class": "11",
+      "mobile": "9729806990",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-13",
+          "physics": 15,
+          "chemistry": 24,
+          "maths": 20,
+          "total": 59,
+          "outOf": 75,
+          "percentage": 78.7,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-20",
+          "physics": 21,
+          "chemistry": 16,
+          "maths": 14,
+          "total": 51,
+          "outOf": 75,
+          "percentage": 68.0,
+          "grade": "B"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-27",
+          "physics": 20,
+          "chemistry": 19,
+          "maths": 17,
+          "total": 56,
+          "outOf": 75,
+          "percentage": 74.7,
+          "grade": "B+"
+        }
+      ]
+    },
+    {
+      "name": "Abhay Yadav",
+      "class": "11",
+      "mobile": "8641708053",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-06",
+          "physics": 24,
+          "chemistry": 15,
+          "maths": 24,
+          "total": 63,
+          "outOf": 75,
+          "percentage": 84.0,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-06",
+          "physics": 14,
+          "chemistry": 17,
+          "maths": 17,
+          "total": 48,
+          "outOf": 75,
+          "percentage": 64.0,
+          "grade": "B"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-13",
+          "physics": 23,
+          "chemistry": 16,
+          "maths": 17,
+          "total": 56,
+          "outOf": 75,
+          "percentage": 74.7,
+          "grade": "B+"
+        }
+      ]
+    },
+    {
+      "name": "Sandeep Rai",
+      "class": "11",
+      "mobile": "9374529912",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-06",
+          "physics": 18,
+          "chemistry": 15,
+          "maths": 23,
+          "total": 56,
+          "outOf": 75,
+          "percentage": 74.7,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-27",
+          "physics": 18,
+          "chemistry": 23,
+          "maths": 24,
+          "total": 65,
+          "outOf": 75,
+          "percentage": 86.7,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-06",
+          "physics": 20,
+          "chemistry": 25,
+          "maths": 17,
+          "total": 62,
+          "outOf": 75,
+          "percentage": 82.7,
+          "grade": "A"
+        }
+      ]
+    },
+    {
+      "name": "Rekha Chaudhary",
+      "class": "11",
+      "mobile": "8491905865",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-20",
+          "physics": 15,
+          "chemistry": 22,
+          "maths": 24,
+          "total": 61,
+          "outOf": 75,
+          "percentage": 81.3,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-06",
+          "physics": 14,
+          "chemistry": 20,
+          "maths": 21,
+          "total": 55,
+          "outOf": 75,
+          "percentage": 73.3,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-27",
+          "physics": 20,
+          "chemistry": 19,
+          "maths": 24,
+          "total": 63,
+          "outOf": 75,
+          "percentage": 84.0,
+          "grade": "A"
+        }
+      ]
+    },
+    {
+      "name": "Suraj Gupta",
+      "class": "11",
+      "mobile": "9849877694",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-20",
+          "physics": 19,
+          "chemistry": 17,
+          "maths": 15,
+          "total": 51,
+          "outOf": 75,
+          "percentage": 68.0,
+          "grade": "B"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-27",
+          "physics": 21,
+          "chemistry": 17,
+          "maths": 21,
+          "total": 59,
+          "outOf": 75,
+          "percentage": 78.7,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-20",
+          "physics": 19,
+          "chemistry": 14,
+          "maths": 21,
+          "total": 54,
+          "outOf": 75,
+          "percentage": 72.0,
+          "grade": "B+"
+        }
+      ]
+    },
+    {
+      "name": "Divya Prasad",
+      "class": "12",
+      "mobile": "9454948083",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-27",
+          "physics": 15,
+          "chemistry": 17,
+          "maths": 25,
+          "total": 57,
+          "outOf": 75,
+          "percentage": 76.0,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-27",
+          "physics": 21,
+          "chemistry": 22,
+          "maths": 17,
+          "total": 60,
+          "outOf": 75,
+          "percentage": 80.0,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-27",
+          "physics": 24,
+          "chemistry": 25,
+          "maths": 21,
+          "total": 70,
+          "outOf": 75,
+          "percentage": 93.3,
+          "grade": "A+"
+        }
+      ]
+    },
+    {
+      "name": "Rohit Kumari",
+      "class": "12",
+      "mobile": "9634957885",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-20",
+          "physics": 20,
+          "chemistry": 25,
+          "maths": 22,
+          "total": 67,
+          "outOf": 75,
+          "percentage": 89.3,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-20",
+          "physics": 19,
+          "chemistry": 25,
+          "maths": 21,
+          "total": 65,
+          "outOf": 75,
+          "percentage": 86.7,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-06",
+          "physics": 18,
+          "chemistry": 18,
+          "maths": 17,
+          "total": 53,
+          "outOf": 75,
+          "percentage": 70.7,
+          "grade": "B+"
+        }
+      ]
+    },
+    {
+      "name": "Rahul Yadav",
+      "class": "12",
+      "mobile": "9823374989",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-20",
+          "physics": 18,
+          "chemistry": 15,
+          "maths": 17,
+          "total": 50,
+          "outOf": 75,
+          "percentage": 66.7,
+          "grade": "B"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-20",
+          "physics": 17,
+          "chemistry": 19,
+          "maths": 16,
+          "total": 52,
+          "outOf": 75,
+          "percentage": 69.3,
+          "grade": "B"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-13",
+          "physics": 14,
+          "chemistry": 25,
+          "maths": 22,
+          "total": 61,
+          "outOf": 75,
+          "percentage": 81.3,
+          "grade": "A"
+        }
+      ]
+    },
+    {
+      "name": "Kavita Kumar",
+      "class": "12",
+      "mobile": "8271094777",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-20",
+          "physics": 19,
+          "chemistry": 16,
+          "maths": 14,
+          "total": 49,
+          "outOf": 75,
+          "percentage": 65.3,
+          "grade": "B"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-27",
+          "physics": 21,
+          "chemistry": 15,
+          "maths": 15,
+          "total": 51,
+          "outOf": 75,
+          "percentage": 68.0,
+          "grade": "B"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-06",
+          "physics": 21,
+          "chemistry": 15,
+          "maths": 23,
+          "total": 59,
+          "outOf": 75,
+          "percentage": 78.7,
+          "grade": "B+"
+        }
+      ]
+    },
+    {
+      "name": "Suraj Singh",
+      "class": "12",
+      "mobile": "7318699938",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-20",
+          "physics": 20,
+          "chemistry": 21,
+          "maths": 21,
+          "total": 62,
+          "outOf": 75,
+          "percentage": 82.7,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-06",
+          "physics": 23,
+          "chemistry": 20,
+          "maths": 18,
+          "total": 61,
+          "outOf": 75,
+          "percentage": 81.3,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-13",
+          "physics": 23,
+          "chemistry": 25,
+          "maths": 15,
+          "total": 63,
+          "outOf": 75,
+          "percentage": 84.0,
+          "grade": "A"
+        }
+      ]
+    },
+    {
+      "name": "Simran Verma",
+      "class": "12",
+      "mobile": "8281206797",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-20",
+          "physics": 18,
+          "chemistry": 14,
+          "maths": 17,
+          "total": 49,
+          "outOf": 75,
+          "percentage": 65.3,
+          "grade": "B"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-27",
+          "physics": 25,
+          "chemistry": 18,
+          "maths": 25,
+          "total": 68,
+          "outOf": 75,
+          "percentage": 90.7,
+          "grade": "A+"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-20",
+          "physics": 15,
+          "chemistry": 24,
+          "maths": 17,
+          "total": 56,
+          "outOf": 75,
+          "percentage": 74.7,
+          "grade": "B+"
+        }
+      ]
+    },
+    {
+      "name": "Rekha Rai",
+      "class": "12",
+      "mobile": "8183242102",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-20",
+          "physics": 18,
+          "chemistry": 23,
+          "maths": 25,
+          "total": 66,
+          "outOf": 75,
+          "percentage": 88.0,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-20",
+          "physics": 21,
+          "chemistry": 15,
+          "maths": 21,
+          "total": 57,
+          "outOf": 75,
+          "percentage": 76.0,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-27",
+          "physics": 25,
+          "chemistry": 20,
+          "maths": 18,
+          "total": 63,
+          "outOf": 75,
+          "percentage": 84.0,
+          "grade": "A"
+        }
+      ]
+    },
+    {
+      "name": "Rajesh Kumari",
+      "class": "12",
+      "mobile": "7940139904",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-27",
+          "physics": 23,
+          "chemistry": 14,
+          "maths": 16,
+          "total": 53,
+          "outOf": 75,
+          "percentage": 70.7,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-20",
+          "physics": 22,
+          "chemistry": 24,
+          "maths": 21,
+          "total": 67,
+          "outOf": 75,
+          "percentage": 89.3,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-27",
+          "physics": 16,
+          "chemistry": 23,
+          "maths": 20,
+          "total": 59,
+          "outOf": 75,
+          "percentage": 78.7,
+          "grade": "B+"
+        }
+      ]
+    },
+    {
+      "name": "Kunal Prasad",
+      "class": "12",
+      "mobile": "9551256746",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-06",
+          "physics": 22,
+          "chemistry": 14,
+          "maths": 21,
+          "total": 57,
+          "outOf": 75,
+          "percentage": 76.0,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-06",
+          "physics": 19,
+          "chemistry": 18,
+          "maths": 19,
+          "total": 56,
+          "outOf": 75,
+          "percentage": 74.7,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-27",
+          "physics": 20,
+          "chemistry": 22,
+          "maths": 14,
+          "total": 56,
+          "outOf": 75,
+          "percentage": 74.7,
+          "grade": "B+"
+        }
+      ]
+    },
+    {
+      "name": "Deepak Kumar",
+      "class": "12",
+      "mobile": "9597703482",
+      "tests": [
+        {
+          "testName": "Weekly Test 1",
+          "date": "2026-06-27",
+          "physics": 18,
+          "chemistry": 21,
+          "maths": 25,
+          "total": 64,
+          "outOf": 75,
+          "percentage": 85.3,
+          "grade": "A"
+        },
+        {
+          "testName": "Weekly Test 2",
+          "date": "2026-06-13",
+          "physics": 15,
+          "chemistry": 14,
+          "maths": 24,
+          "total": 53,
+          "outOf": 75,
+          "percentage": 70.7,
+          "grade": "B+"
+        },
+        {
+          "testName": "Weekly Test 3",
+          "date": "2026-06-06",
+          "physics": 25,
+          "chemistry": 16,
+          "maths": 18,
+          "total": 59,
+          "outOf": 75,
+          "percentage": 78.7,
+          "grade": "B+"
+        }
+      ]
+    }
+  ]
+};
