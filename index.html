@@ -2,7 +2,52 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=1280">
+<meta name="viewport" id="viewportMeta" content="width=1280, initial-scale=1">
+<script>
+/* =========================================================
+   AUTO-FIT DESKTOP LAYOUT TO SCREEN (no manual pinch-zoom needed)
+   -----------------------------------------------------------
+   The site is intentionally built at a fixed 1280px desktop
+   canvas on every device (so mobile users see the exact same
+   rich layout as desktop, per site requirements). Simply setting
+   <meta viewport width=1280> alone makes phones render that
+   1280px canvas at initial-scale=1, which looks TINY on a ~390px
+   wide phone screen and forces the user to manually pinch-zoom in.
+   That manual zoom then causes browsers (especially iOS Safari)
+   to mis-position position:fixed elements (headers, modals, the
+   floating WhatsApp button, the video popup) because fixed
+   elements are pinned to the *layout* viewport, not what the user
+   is currently looking at after a manual pinch — this is exactly
+   what made the video popup / header appear to "float outside"
+   the page.
+   FIX: compute initial-scale = (physical screen width) / 1280 in
+   JS, using window.screen.width which reflects the true device
+   width and is NOT affected by the viewport meta itself. This
+   scales the whole 1280px desktop canvas down to exactly fill the
+   phone's screen on load — full desktop layout, fully visible,
+   zero manual zooming required. Kept editable via pinch afterwards.
+========================================================= */
+(function () {
+  var DESIGN_WIDTH = 1280;
+  var meta = document.getElementById('viewportMeta');
+  function applyScale() {
+    var sw = window.screen && window.screen.width ? window.screen.width : window.innerWidth;
+    var scale = sw / DESIGN_WIDTH;
+    if (!isFinite(scale) || scale <= 0) scale = 1;
+    if (scale > 1) scale = 1; // never zoom IN past 100% on large/desktop screens
+    if (scale < 0.15) scale = 0.15; // sanity floor
+    var s = scale.toFixed(4);
+    meta.setAttribute('content',
+      'width=' + DESIGN_WIDTH +
+      ', initial-scale=' + s +
+      ', minimum-scale=' + s +
+      ', maximum-scale=5, user-scalable=yes');
+  }
+  applyScale();
+  window.addEventListener('resize', applyScale);
+  window.addEventListener('orientationchange', function () { setTimeout(applyScale, 250); });
+})();
+</script>
 <title>CWA SCIENCE CLASSES | Concept with Abhishek - Best Coaching for Class 9-12 PCM (Bihar Board)</title>
 <meta name="description" content="CWA SCIENCE CLASSES - Concept with Abhishek. Class 9 to 12 Physics, Chemistry, Maths (Bihar Board) taught by Abhishek Garg Sir. Watch batch videos, download PDF notes, check weekly test results online.">
 <meta name="theme-color" content="#4C3CE3">
@@ -169,9 +214,9 @@
       <p class="section-desc" id="batchesSubheading">Har class ke liye Physics, Chemistry aur Maths ke batch — sath mein video lecture aur PDF notes.</p>
     </div>
 
-    <div class="batch-tabs" id="batchTabs"><!-- JS injects tab buttons here --></div>
+    <div class="batch-tabs" id="batchTabs" data-aos="zoom-in" data-aos-delay="100"><!-- JS injects tab buttons here --></div>
 
-    <div id="batchPanels"><!-- JS injects batch panels here --></div>
+    <div id="batchPanels" data-aos="fade-up" data-aos-delay="150"><!-- JS injects batch panels here --></div>
   </div>
 </section>
 
@@ -189,6 +234,9 @@
 <!-- ===================== TEST RESULT ===================== -->
 <section class="result-section" id="result">
   <div class="result-bg-anim"></div>
+  <div class="result-particles" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
   <div class="section-container">
     <div class="section-head light" data-aos="fade-up">
       <p class="section-tag">📊 Weekly Test</p>
@@ -354,7 +402,7 @@
 <footer class="site-footer">
   <div class="footer-top">
     <div class="section-container footer-grid">
-      <div class="footer-col footer-brand">
+      <div class="footer-col footer-brand" data-aos="fade-up" data-aos-delay="0">
         <div class="footer-logo">
           <img id="footerLogo" src="assets/img/logo.webp" alt="CWA Science Classes">
           <div>
@@ -371,7 +419,7 @@
         </div>
       </div>
 
-      <div class="footer-col">
+      <div class="footer-col" data-aos="fade-up" data-aos-delay="100">
         <h4>Links</h4>
         <ul>
           <li><a href="#home">Home</a></li>
@@ -381,7 +429,7 @@
         </ul>
       </div>
 
-      <div class="footer-col">
+      <div class="footer-col" data-aos="fade-up" data-aos-delay="200">
         <h4>Classes</h4>
         <ul id="footerClasses">
           <li><a href="#batches">Class 9 PCM</a></li>
@@ -391,7 +439,7 @@
         </ul>
       </div>
 
-      <div class="footer-col">
+      <div class="footer-col" data-aos="fade-up" data-aos-delay="300">
         <h4>📞 Admission Helpline (24/7)</h4>
         <a href="tel:+916207434940" class="footer-phone" id="footerPhone">+91 6207434940</a>
         <p class="footer-address"><i class="fa-solid fa-location-dot"></i> <span id="footerAddress">CWA SCIENCE CLASSES, Patel High School Road Maheshkhunt (Godavari Complex), Bihar - India</span></p>
