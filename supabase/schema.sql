@@ -239,10 +239,20 @@ declare
 begin
   if not exists (select 1 from auth.users where email = 'avinash@cwa-admin.local') then
     v_uid := gen_random_uuid();
+    -- IMPORTANT: every one of these text columns must be '' (empty string),
+    -- NEVER NULL. GoTrue (Supabase Auth) does a strict Go string-scan on
+    -- these columns during signInWithPassword() and throws a 500
+    -- "Database error querying schema" if even one of them is NULL. This
+    -- bit everyone who inserts auth.users manually instead of via the
+    -- Admin API, so we set ALL of them explicitly below.
     insert into auth.users (
       instance_id, id, aud, role, email, encrypted_password,
       email_confirmed_at, created_at, updated_at,
-      raw_app_meta_data, raw_user_meta_data, confirmation_token, recovery_token
+      raw_app_meta_data, raw_user_meta_data,
+      confirmation_token, recovery_token, email_change,
+      email_change_token_new, email_change_token_current,
+      phone_change, phone_change_token, reauthentication_token,
+      is_super_admin, is_sso_user, is_anonymous
     ) values (
       '00000000-0000-0000-0000-000000000000',
       v_uid,
@@ -253,7 +263,10 @@ begin
       now(), now(), now(),
       '{"provider":"email","providers":["email"]}',
       '{"username":"AVINASH"}',
-      '', ''
+      '', '', '',
+      '', '',
+      '', '', '',
+      false, false, false
     );
 
     -- Required by GoTrue for email/password sign-in on newer Supabase
@@ -270,6 +283,21 @@ begin
       now(), now(), now()
     );
   end if;
+
+  -- Safety net: if the admin auth user already existed from a previous
+  -- (buggy) run of this script, make sure none of the GoTrue string
+  -- columns are left NULL — this is exactly what causes the Admin Panel
+  -- login to fail with "Database error querying schema" / not open at all.
+  update auth.users set
+    confirmation_token = coalesce(confirmation_token, ''),
+    recovery_token = coalesce(recovery_token, ''),
+    email_change = coalesce(email_change, ''),
+    email_change_token_new = coalesce(email_change_token_new, ''),
+    email_change_token_current = coalesce(email_change_token_current, ''),
+    phone_change = coalesce(phone_change, ''),
+    phone_change_token = coalesce(phone_change_token, ''),
+    reauthentication_token = coalesce(reauthentication_token, '')
+  where email = 'avinash@cwa-admin.local';
 end $$;
 
 -- Keep a small mapping table so the Admin Panel login screen can translate

@@ -527,12 +527,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     e.preventDefault();
     const cls = document.getElementById('resultClass').value.trim();
     const mobile = document.getElementById('resultMobile').value.trim();
+    const submitBtn = resultForm.querySelector('.btn-primary');
+    const btnOriginalHtml = submitBtn.innerHTML;
 
     resultOutput.style.display = 'none';
     resultError.style.display = 'none';
     namePickerBox.style.display = 'none';
 
-    const matches = await fetchMatches(cls, mobile);
+    // Small animated "loading" state so the button gives instant feedback
+    submitBtn.classList.add('loading');
+    submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch"></i> Result Dhoondh Rahe Hain...';
+
+    // tiny artificial delay so the loading animation is visible even on
+    // instant local-fallback lookups (feels more alive / responsive)
+    const [matches] = await Promise.all([
+      fetchMatches(cls, mobile),
+      new Promise(res => setTimeout(res, 450))
+    ]);
+
+    submitBtn.classList.remove('loading');
+    submitBtn.innerHTML = btnOriginalHtml;
 
     if (!matches || matches.length === 0) {
       resultError.style.display = 'flex';
