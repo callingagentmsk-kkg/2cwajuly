@@ -30,6 +30,7 @@ function loadLocalDB() {
     batches: (typeof BATCHES_DATA !== 'undefined' ? BATCHES_DATA.batches : []).map((b, bi) => ({
       id: b.id, class_name: b.class, title: b.title, subtitle: b.subtitle, color: b.color, icon: b.icon,
       image_url: b.image_url || '', offer_text: b.offer_text || '', price: b.price || '', payment_link: b.payment_link || '',
+      is_free: b.is_free !== undefined ? b.is_free : true,
       sort_order: bi, active: true,
       subjects: (b.subjects || []).map((s, si) => ({
         id: `${b.id}-s${si}`, name: s.name, icon: s.icon, sort_order: si,
@@ -44,6 +45,7 @@ function loadLocalDB() {
     })),
     students: [],
     results: [],
+    test_templates: [],
     admin_profile: { username: 'AVINASH', auth_email: 'avinash@cwa-admin.local' }
   };
   localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(seed));
@@ -228,18 +230,20 @@ const AdminDB = {
     return loadLocalDB().batches;
   },
   async saveBatch(batch) {
+    const isFree = batch.is_free === true || batch.is_free === 'true' || batch.is_free === 'on' || batch.is_free === '1';
     if (this.isSupabase()) {
       const row = {
         id: batch.id, class_name: batch.class_name, title: batch.title, subtitle: batch.subtitle,
         color: batch.color, icon: batch.icon, image_url: batch.image_url, offer_text: batch.offer_text,
-        price: batch.price, payment_link: batch.payment_link, sort_order: batch.sort_order || 0
+        price: batch.price, payment_link: batch.payment_link, is_free: isFree, sort_order: batch.sort_order || 0
       };
       await supabaseClient.from('batches').upsert(row);
     } else {
       const db = loadLocalDB();
+      const toSave = Object.assign({}, batch, { is_free: isFree });
       const idx = db.batches.findIndex(b => b.id === batch.id);
-      if (idx >= 0) db.batches[idx] = Object.assign({}, db.batches[idx], batch);
-      else db.batches.push(Object.assign({ subjects: [] }, batch));
+      if (idx >= 0) db.batches[idx] = Object.assign({}, db.batches[idx], toSave);
+      else db.batches.push(Object.assign({ subjects: [] }, toSave));
       saveLocalDB(db);
     }
   },
@@ -377,7 +381,62 @@ const AdminDB = {
     else { const db = loadLocalDB(); db.students = db.students.filter(s => s.id !== id); db.results = db.results.filter(r => r.student_id !== id); saveLocalDB(db); }
   },
 
-  /* ---------------- RESULTS ---------------- */
+  /* ---------------- TEST TEMPLATES (Weekly Test subjects + max marks, set once per class) ---------------- */
+  // A "template" says: for THIS class, "Weekly Test 4" on THIS date covers
+  // THESE subjects with THESE max marks. Every student's result for that
+  // test then just needs the marks-scored value per subject — subjects +
+  // max marks are NOT re-typed per student.
+  async listTestTemplates(classFilter) {
+    if (this.isSupabase()) {
+      let q = supabaseClient.from('test_templates').select('*').order('test_date', { ascending: false });
+      if (classFilter) q = q.eq('class', classFilter);
+      const { data } = await q;
+      return data || [];
+    }
+    const db = loadLocalDB();
+    db.test_templates = db.test_templates || [];
+    let list = db.test_templates.slice();
+    if (classFilter) list = list.filter(t => t.class === classFilter);
+    return list.sort((a, b) => (b.test_date || '').localeCompare(a.test_date || ''));
+  },
+  async saveTestTemplate(template) {
+    if (this.isSupabase()) {
+      if (template.id) {
+        const { data } = await supabaseClient.from('test_templates').update(template).eq('id', template.id).select('*').single();
+        return data;
+      } else {
+        const { data } = await supabaseClient.from('test_templates').insert(template).select('*').single();
+        return data;
+      }
+    } else {
+      const db = loadLocalDB();
+      db.test_templates = db.test_templates || [];
+      if (template.id) {
+        const idx = db.test_templates.findIndex(t => t.id === template.id);
+        if (idx >= 0) db.test_templates[idx] = Object.assign({}, db.test_templates[idx], template);
+        saveLocalDB(db);
+        return db.test_templates[idx];
+      } else {
+        template.id = nextLocalId(db.test_templates);
+        db.test_templates.push(template);
+        saveLocalDB(db);
+        return template;
+      }
+    }
+  },
+  async deleteTestTemplate(id) {
+    if (this.isSupabase()) {
+      await supabaseClient.from('results').delete().eq('template_id', id);
+      await supabaseClient.from('test_templates').delete().eq('id', id);
+    } else {
+      const db = loadLocalDB();
+      db.test_templates = (db.test_templates || []).filter(t => t.id !== id);
+      db.results = (db.results || []).filter(r => r.template_id !== id);
+      saveLocalDB(db);
+    }
+  },
+
+  /* ---------------- RESULTS (flexible subjects_marks) ---------------- */
   async listResultsForStudent(studentId) {
     if (this.isSupabase()) {
       const { data } = await supabaseClient.from('results').select('*').eq('student_id', studentId).order('test_date');
@@ -385,33 +444,87 @@ const AdminDB = {
     }
     return loadLocalDB().results.filter(r => r.student_id === studentId);
   },
+  // Every result for a given template (used by the bulk marks-entry grid so
+  // we know which students already have marks filled in for that test).
+  async listResultsForTemplate(templateId) {
+    if (this.isSupabase()) {
+      const { data } = await supabaseClient.from('results').select('*').eq('template_id', templateId);
+      return data || [];
+    }
+    const db = loadLocalDB();
+    return (db.results || []).filter(r => r.template_id === templateId);
+  },
+  // result = { student_id, template_id, test_name, test_date, subjects_marks:[{name,marks,max_marks}], id? }
   async saveResult(result) {
     if (this.isSupabase()) {
-      if (result.id) await supabaseClient.from('results').update(result).eq('id', result.id);
-      else await supabaseClient.from('results').insert(result);
+      const row = {
+        student_id: result.student_id, template_id: result.template_id || null,
+        test_name: result.test_name, test_date: result.test_date,
+        subjects_marks: result.subjects_marks || []
+      };
+      if (result.id) {
+        await supabaseClient.from('results').update(row).eq('id', result.id);
+      } else {
+        await supabaseClient.from('results').upsert(row, { onConflict: 'student_id,template_id' });
+      }
     } else {
       const db = loadLocalDB();
       const settings = db.site_settings || {};
       const validityDays = settings.result_validity_days || 3;
       const grade = (pct) => pct >= 90 ? 'A+' : pct >= 80 ? 'A' : pct >= 70 ? 'B+' : pct >= 60 ? 'B' : pct >= 50 ? 'C' : 'D';
-      const total = Number(result.physics||0) + Number(result.chemistry||0) + Number(result.maths||0);
-      const outOf = result.out_of || 75;
-      const pct = Math.round((total / outOf) * 1000) / 10;
+      const subjectsMarks = result.subjects_marks || [];
+      const total = subjectsMarks.reduce((s, x) => s + (Number(x.marks) || 0), 0);
+      const outOf = subjectsMarks.reduce((s, x) => s + (Number(x.max_marks) || 0), 0);
+      const pct = outOf > 0 ? Math.round((total / outOf) * 1000) / 10 : 0;
       const now = new Date();
       const validUntil = new Date(now.getTime() + validityDays * 24 * 3600 * 1000);
       const enriched = Object.assign({}, result, {
+        subjects_marks: subjectsMarks,
         total, out_of: outOf, percentage: pct, grade: grade(pct),
         published_at: now.toISOString(), valid_until: validUntil.toISOString()
       });
-      if (result.id) {
-        const idx = db.results.findIndex(r => r.id === result.id);
-        if (idx >= 0) db.results[idx] = Object.assign({}, db.results[idx], enriched);
+      db.results = db.results || [];
+      // If saving by (student_id + template_id) and an existing row already
+      // matches, update it instead of creating a duplicate (mirrors the
+      // Supabase unique-constraint + upsert behaviour above).
+      let idx = result.id ? db.results.findIndex(r => r.id === result.id) : -1;
+      if (idx < 0 && result.template_id) {
+        idx = db.results.findIndex(r => r.student_id === result.student_id && r.template_id === result.template_id);
+      }
+      if (idx >= 0) {
+        enriched.id = db.results[idx].id;
+        db.results[idx] = Object.assign({}, db.results[idx], enriched);
       } else {
         enriched.id = nextLocalId(db.results);
         db.results.push(enriched);
       }
       saveLocalDB(db);
     }
+  },
+  // Bulk-save: given a template + a map of studentId -> subjects_marks
+  // (marks per subject only; max_marks/name come from the template), saves
+  // one result row per student in a single pass. This backs the Admin
+  // Panel's "fill one student, auto-apply as default to everyone else"
+  // convenience flow (the UI pre-fills every row with the same defaults;
+  // the admin only edits the ones that differ, then hits one Save button).
+  async bulkSaveResults(template, entries) {
+    // entries: [{ student_id, marks: { [subjectName]: number } }]
+    const subjects = template.subjects || [];
+    for (const entry of entries) {
+      const subjects_marks = subjects.map(s => ({
+        name: s.name,
+        max_marks: Number(s.max_marks) || 0,
+        marks: Number(entry.marks[s.name] || 0)
+      }));
+      await this.saveResult({
+        student_id: entry.student_id,
+        template_id: template.id,
+        test_name: template.test_name,
+        test_date: template.test_date,
+        subjects_marks
+      });
+    }
+    return { ok: true, count: entries.length };
   },
   async deleteResult(id) {
     if (this.isSupabase()) { await supabaseClient.from('results').delete().eq('id', id); }
