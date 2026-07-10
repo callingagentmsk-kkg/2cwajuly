@@ -275,14 +275,15 @@
         </div>
         <div class="table-scroll">
           <table class="result-table">
+            <!-- <thead> is generated dynamically by js/main.js (buildResultThead)
+                 based on the actual subjects covered by this student's tests,
+                 since a Weekly Test can now cover 1, 2, or any number of
+                 subjects (not just fixed Physics/Chemistry/Maths). -->
             <thead>
               <tr>
                 <th>Test</th>
                 <th>Date</th>
-                <th>Physics<br><small>/25</small></th>
-                <th>Chemistry<br><small>/25</small></th>
-                <th>Maths<br><small>/25</small></th>
-                <th>Total<br><small>/75</small></th>
+                <th>Total</th>
                 <th>%</th>
                 <th>Grade</th>
               </tr>

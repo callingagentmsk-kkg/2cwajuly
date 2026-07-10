@@ -107,6 +107,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             id: b.id, class: b.class_name, title: b.title, subtitle: b.subtitle,
             color: b.color, icon: b.icon, image_url: b.image_url,
             offer_text: b.offer_text, price: b.price, payment_link: b.payment_link,
+            is_free: b.is_free !== false,
             subjects: (b.subjects || []).sort((a, c) => (a.sort_order||0) - (c.sort_order||0)).map(s => ({
               name: s.name, icon: s.icon,
               chapters: (s.chapters || []).sort((a, c) => (a.sort_order||0) - (c.sort_order||0)).map(ch => ({
@@ -334,25 +335,35 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Panels — every chapter (video + PDFs) lives INSIDE its batch/subject block.
     let html = '';
     batchesData.batches.forEach((batch, idx) => {
+      const isFree = batch.is_free !== false;
       html += `<div class="batch-panel ${idx === 0 ? 'active' : ''}" id="panel-${batch.id}">`;
       html += `
         <div class="batch-panel-head">
-          <div class="batch-panel-icon" style="background:${batch.color || '#6C63FF'}"><i class="fa-solid fa-${batch.icon || 'layer-group'}"></i></div>
-          <div>
-            <h3>${batch.title}</h3>
+          ${batch.image_url ? `<div class="batch-panel-img"><img src="${batch.image_url}" alt="${batch.title}" loading="lazy"></div>` : `
+          <div class="batch-panel-icon" style="background:${batch.color || '#6C63FF'}"><i class="fa-solid fa-${batch.icon || 'layer-group'}"></i></div>`}
+          <div class="batch-panel-info">
+            <h3>${batch.title} ${isFree ? '<span class="batch-badge free"><i class="fa-solid fa-unlock"></i> FREE</span>' : '<span class="batch-badge paid"><i class="fa-solid fa-lock"></i> PAID</span>'}</h3>
             <p>${batch.subtitle || ''}</p>
             ${batch.offer_text ? `<p style="color:#FF6B6B;font-weight:700;margin-top:4px;">${batch.offer_text}</p>` : ''}
           </div>
-          ${batch.price ? `<div style="margin-left:auto;text-align:right;">
-              <div style="font-family:var(--font-head);font-weight:800;font-size:1.3rem;color:var(--primary);">₹${batch.price}</div>
+          ${batch.price ? `<div class="batch-panel-price">
+              <div class="price-val">₹${batch.price}</div>
               ${batch.payment_link ? `<a href="${batch.payment_link}" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:6px;padding:8px 18px;font-size:.82rem;"><i class="fa-solid fa-credit-card"></i> Enroll / Pay Now</a>` : ''}
             </div>` : ''}
         </div>`;
 
+      if (!isFree) {
+        html += `<div class="batch-locked-banner">
+          <i class="fa-solid fa-lock"></i>
+          <span>Ye batch <b>PAID</b> hai — chapters/videos/PDFs unlock karne ke liye enroll karein.</span>
+          ${batch.payment_link ? `<a href="${batch.payment_link}" target="_blank" rel="noopener" class="btn btn-primary btn-sm-inline"><i class="fa-solid fa-credit-card"></i> Enroll Karein</a>` : ''}
+        </div>`;
+      }
+
       (batch.subjects || []).forEach(subject => {
         const iconInfo = subjectIconMap[subject.name] || { icon: 'fa-book' };
         const grad = subjectColorMap[subject.name] || 'linear-gradient(135deg,#999,#666)';
-        html += `<div class="subject-block">
+        html += `<div class="subject-block ${!isFree ? 'locked-subject' : ''}">
           <div class="subject-block-title">
             <i class="fa-solid ${iconInfo.icon}" style="background:${grad}"></i>
             <span>${subject.name}</span>
@@ -362,18 +373,27 @@ document.addEventListener('DOMContentLoaded', async () => {
         (subject.chapters || []).forEach((ch, i) => {
           const resources = ch.resources && ch.resources.length ? ch.resources : [];
           html += `
-            <div class="chapter-card" data-aos="fade-up" data-aos-delay="${(i % 3) * 80}">
+            <div class="chapter-card ${!isFree ? 'locked' : ''}" data-aos="fade-up" data-aos-delay="${(i % 3) * 80}">
+              ${!isFree ? `<div class="chapter-lock-overlay"><i class="fa-solid fa-lock"></i></div>` : ''}
               <div class="chapter-num">Chapter ${i + 1}</div>
               <div class="chapter-title">${ch.title}</div>
               ${ch.description ? `<div class="chapter-desc" style="font-size:.8rem;color:var(--gray);margin-bottom:10px;">${ch.description}</div>` : ''}
               <div class="chapter-meta"><i class="fa-regular fa-clock"></i> ${ch.duration || ''}</div>
               <div class="chapter-actions" style="flex-wrap:wrap;">
-                ${ch.youtube ? `<button class="chapter-btn video" data-yt="${ch.youtube}" data-title="${subject.name} - ${ch.title}">
-                  <i class="fa-solid fa-circle-play"></i> Video
-                </button>` : ''}
-                ${resources.map(r => `<a class="chapter-btn pdf" href="${r.url}" target="_blank" rel="noopener" title="${r.description || ''}">
-                  <i class="fa-solid fa-file-pdf"></i> ${r.type || 'PDF'}
-                </a>`).join('')}
+                ${ch.youtube ? (isFree
+                  ? `<button class="chapter-btn video" data-yt="${ch.youtube}" data-title="${subject.name} - ${ch.title}">
+                      <i class="fa-solid fa-circle-play"></i> Video
+                    </button>`
+                  : `<button class="chapter-btn video locked-btn" disabled title="Enroll karke unlock karein">
+                      <i class="fa-solid fa-lock"></i> Video
+                    </button>`) : ''}
+                ${resources.map(r => isFree
+                  ? `<a class="chapter-btn pdf" href="${r.url}" target="_blank" rel="noopener" title="${r.description || ''}">
+                      <i class="fa-solid fa-file-pdf"></i> ${r.type || 'PDF'}
+                    </a>`
+                  : `<button class="chapter-btn pdf locked-btn" disabled title="Enroll karke unlock karein">
+                      <i class="fa-solid fa-lock"></i> ${r.type || 'PDF'}
+                    </button>`).join('')}
               </div>
             </div>`;
         });
@@ -385,8 +405,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     batchPanelsContainer.innerHTML = html;
 
-    // Re-attach video button listeners
-    document.querySelectorAll('.chapter-btn.video').forEach(btn => {
+    // Re-attach video button listeners (locked/disabled buttons have no data-yt, safe no-op)
+    document.querySelectorAll('.chapter-btn.video:not(.locked-btn)').forEach(btn => {
       btn.addEventListener('click', () => openVideoModal(btn.dataset.yt, btn.dataset.title));
     });
 
@@ -470,6 +490,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     resultForm.parentNode.insertBefore(namePickerBox, resultOutput);
   }
 
+  // Normalizes a test's subject-marks into a flexible array whether it came
+  // from the new Supabase jsonb `subjects` field or the OLD local-fallback
+  // fixed physics/chemistry/maths format (js/results-data.js) — so the
+  // rendering code below only ever needs to loop over `t.subjects`.
+  function normalizeTestSubjects(t) {
+    if (t.subjects && t.subjects.length) return t.subjects;
+    if (t.physics !== undefined || t.chemistry !== undefined || t.maths !== undefined) {
+      const per = Math.round((t.outOf || 75) / 3);
+      return [
+        { name: 'Physics', marks: t.physics, max_marks: per },
+        { name: 'Chemistry', marks: t.chemistry, max_marks: per },
+        { name: 'Maths', marks: t.maths, max_marks: per }
+      ];
+    }
+    return [];
+  }
+
   async function fetchMatches(cls, mobile) {
     if (typeof IS_SUPABASE_CONFIGURED !== 'undefined' && IS_SUPABASE_CONFIGURED) {
       const { data, error } = await supabaseClient.rpc('get_public_result', { p_class: cls, p_mobile: mobile });
@@ -482,23 +519,50 @@ document.addEventListener('DOMContentLoaded', async () => {
     return RESULTS_DATA.students.filter(s => s.class === cls && s.mobile === mobile);
   }
 
+  // Builds the result table's <thead> dynamically based on the union of
+  // subjects appearing across this student's tests (instead of a hardcoded
+  // Physics/Chemistry/Maths header) — supports Weekly Tests that cover just
+  // 1, 2, or any number of subjects.
+  function buildResultThead(tests) {
+    const subjectNames = [];
+    tests.forEach(t => normalizeTestSubjects(t).forEach(s => { if (!subjectNames.includes(s.name)) subjectNames.push(s.name); }));
+    const thead = document.querySelector('.result-table thead');
+    if (!thead) return subjectNames;
+    thead.innerHTML = `<tr>
+      <th>Test</th>
+      <th>Date</th>
+      ${subjectNames.map(n => `<th>${n}</th>`).join('')}
+      <th>Total</th>
+      <th>%</th>
+      <th>Grade</th>
+    </tr>`;
+    return subjectNames;
+  }
+
   function showStudentResult(student) {
     document.getElementById('rName').textContent = student.name;
     document.getElementById('rMeta').textContent = `Class ${student.class} | Mobile: ${student.mobile}`;
 
+    const tests = student.tests || [];
+    const subjectNames = buildResultThead(tests);
+
     let rowsHtml = '';
     let totalPct = 0;
-    (student.tests || []).forEach(t => {
+    tests.forEach(t => {
       totalPct += Number(t.percentage) || 0;
       const color = gradeColors[t.grade] || '#4C3CE3';
+      const subjects = normalizeTestSubjects(t);
+      const marksByName = {};
+      subjects.forEach(s => { marksByName[s.name] = { marks: s.marks, max: s.max_marks }; });
       rowsHtml += `
         <tr>
           <td>${t.testName}</td>
           <td>${formatDate(t.date)}</td>
-          <td>${t.physics}</td>
-          <td>${t.chemistry}</td>
-          <td>${t.maths}</td>
-          <td><strong>${t.total}</strong></td>
+          ${subjectNames.map(n => {
+            const m = marksByName[n];
+            return `<td>${m ? `${m.marks ?? '-'}${m.max ? `<small>/${m.max}</small>` : ''}` : '-'}</td>`;
+          }).join('')}
+          <td><strong>${t.total}</strong>${t.outOf ? `<small>/${t.outOf}</small>` : ''}</td>
           <td>${t.percentage}%</td>
           <td><span class="grade-pill" style="background:${color}">${t.grade}</span></td>
         </tr>`;

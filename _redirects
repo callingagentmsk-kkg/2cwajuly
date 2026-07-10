@@ -1,2 +1,7 @@
-/Avinash /Avinash.html 200
-/avinash /Avinash.html 200
+# NOTE: Cloudflare Pages automatically serves Avinash.html at the clean
+# URL /Avinash (it auto-redirects any *.html file to its extension-less
+# path). Adding an explicit "/Avinash /Avinash.html 200" rule here clashes
+# with that automatic behaviour and causes an infinite redirect loop
+# (ERR_TOO_MANY_REDIRECTS) in production on Cloudflare Pages. Do NOT add
+# that rule back. We only need a one-hop redirect for the lowercase path.
+/avinash /Avinash.html 301

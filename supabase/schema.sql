@@ -94,10 +94,14 @@ create table if not exists public.batches (
   offer_text    text,                      -- e.g. '20% OFF Limited Time'
   price         text,                      -- e.g. '999' or '999/-'
   payment_link  text,                      -- Cashfree hosted payment-link URL (optional)
+  is_free       boolean not null default true,  -- true = free/open batch, false = paid/locked batch
   sort_order    int not null default 0,
   active        boolean not null default true,
   created_at    timestamptz not null default now()
 );
+
+-- For existing databases created before this column existed:
+alter table public.batches add column if not exists is_free boolean not null default true;
 
 create table if not exists public.subjects (
   id           bigint generated always as identity primary key,
@@ -142,31 +146,85 @@ create table if not exists public.students (
 create index if not exists idx_students_class_mobile on public.students (class, mobile);
 
 -- =========================================================================
--- 6. RESULTS  (Weekly Test Result Entry, with 3-day public visibility)
+-- 6. WEEKLY TEST TEMPLATES + RESULTS (flexible subjects, bulk marks entry)
+-- -------------------------------------------------------------------------
+-- A "test template" is created ONCE per weekly test for a class: test name,
+-- date, and which subjects it covers with how many max marks each (can be
+-- just 1 subject, 2 subjects, or all 3 — fully flexible, admin decides).
+-- The admin then fills in each student's OBTAINED marks in a bulk grid;
+-- the max-marks ("out of") per subject is set only once on the template
+-- and automatically applies to every student — no need to re-type it.
 -- =========================================================================
+create table if not exists public.test_templates (
+  id           bigint generated always as identity primary key,
+  class        text not null,                 -- '9' / '10' / '11' / '12'
+  test_name    text not null,                 -- e.g. 'Weekly Test 4'
+  test_date    date not null default current_date,
+  subjects     jsonb not null default '[]'::jsonb,  -- [{"name":"Physics","max_marks":25}, ...]
+  created_at   timestamptz not null default now()
+);
+create index if not exists idx_test_templates_class on public.test_templates (class);
+
 create table if not exists public.results (
   id             bigint generated always as identity primary key,
   student_id     bigint not null references public.students(id) on delete cascade,
+  template_id    bigint references public.test_templates(id) on delete set null,
   test_name      text not null,             -- e.g. 'Weekly Test 4'
   test_date      date not null default current_date,
-  physics        numeric not null default 0,
-  chemistry      numeric not null default 0,
-  maths          numeric not null default 0,
-  total          numeric generated always as (physics + chemistry + maths) stored,
-  out_of         numeric not null default 75,
-  percentage     numeric generated always as (round((physics + chemistry + maths) / nullif(75,0) * 100, 1)) stored,
+  subjects_marks jsonb not null default '[]'::jsonb,  -- [{"name":"Physics","marks":18,"max_marks":25}, ...]
+  physics        numeric,                   -- legacy columns, kept only for old data compatibility
+  chemistry      numeric,
+  maths          numeric,
+  total          numeric not null default 0,
+  out_of         numeric not null default 0,
+  percentage     numeric,
   grade          text,
   published_at   timestamptz not null default now(),
   valid_until    timestamptz not null default (now() + interval '3 days'),
   created_at     timestamptz not null default now()
 );
 
+-- For databases created before this redesign (adds columns safely, no data loss):
+alter table public.results add column if not exists template_id bigint references public.test_templates(id) on delete set null;
+alter table public.results add column if not exists subjects_marks jsonb not null default '[]'::jsonb;
+do $$
+begin
+  if exists (select 1 from information_schema.columns where table_schema='public' and table_name='results' and column_name='total' and is_generated='ALWAYS') then
+    alter table public.results drop column total;
+    alter table public.results add column total numeric not null default 0;
+  end if;
+  if exists (select 1 from information_schema.columns where table_schema='public' and table_name='results' and column_name='percentage' and is_generated='ALWAYS') then
+    alter table public.results drop column percentage;
+    alter table public.results add column percentage numeric;
+  end if;
+end $$;
+alter table public.results alter column physics drop not null;
+alter table public.results alter column chemistry drop not null;
+alter table public.results alter column maths drop not null;
+alter table public.results alter column out_of drop default;
+alter table public.results alter column out_of set default 0;
+-- Backfill any pre-existing legacy rows (physics/chemistry/maths) into the new flexible format:
+update public.results
+set subjects_marks = jsonb_build_array(
+  jsonb_build_object('name','Physics','marks', coalesce(physics,0), 'max_marks', round(coalesce(out_of,75)/3)),
+  jsonb_build_object('name','Chemistry','marks', coalesce(chemistry,0), 'max_marks', round(coalesce(out_of,75)/3)),
+  jsonb_build_object('name','Maths','marks', coalesce(maths,0), 'max_marks', round(coalesce(out_of,75)/3))
+)
+where subjects_marks = '[]'::jsonb and (physics is not null or chemistry is not null or maths is not null);
+do $$
+begin
+  if not exists (select 1 from pg_constraint where conname = 'results_student_template_unique') then
+    alter table public.results add constraint results_student_template_unique unique (student_id, template_id);
+  end if;
+end $$;
+
 create index if not exists idx_results_student on public.results (student_id);
 create index if not exists idx_results_valid_until on public.results (valid_until);
+create index if not exists idx_results_template on public.results (template_id);
 
--- Auto-compute grade + valid_until (using site_settings.result_validity_days)
--- whenever a row is inserted/updated, so the admin panel doesn't need to
--- calculate this itself.
+-- Auto-compute total/out_of/percentage/grade + valid_until from subjects_marks
+-- (using site_settings.result_validity_days) whenever a row is inserted/updated,
+-- so the admin panel never has to calculate this itself.
 create or replace function public.set_result_defaults()
 returns trigger
 language plpgsql
@@ -174,11 +232,23 @@ as $$
 declare
   v_days int;
   v_pct numeric;
+  v_total numeric := 0;
+  v_out_of numeric := 0;
+  item jsonb;
 begin
   select coalesce((data->>'result_validity_days')::int, 3) into v_days
   from public.site_settings where id = 1;
 
-  v_pct := round((new.physics + new.chemistry + new.maths) / nullif(new.out_of,0) * 100, 1);
+  for item in select * from jsonb_array_elements(coalesce(new.subjects_marks, '[]'::jsonb))
+  loop
+    v_total := v_total + coalesce((item->>'marks')::numeric, 0);
+    v_out_of := v_out_of + coalesce((item->>'max_marks')::numeric, 0);
+  end loop;
+
+  new.total := v_total;
+  new.out_of := case when v_out_of > 0 then v_out_of else coalesce(new.out_of, 0) end;
+  v_pct := case when new.out_of > 0 then round(v_total / new.out_of * 100, 1) else 0 end;
+  new.percentage := v_pct;
 
   new.grade := case
     when v_pct >= 90 then 'A+'
@@ -342,9 +412,7 @@ as $$
       jsonb_build_object(
         'testName', r.test_name,
         'date', r.test_date,
-        'physics', r.physics,
-        'chemistry', r.chemistry,
-        'maths', r.maths,
+        'subjects', r.subjects_marks,
         'total', r.total,
         'outOf', r.out_of,
         'percentage', r.percentage,
@@ -373,6 +441,7 @@ alter table public.chapters           enable row level security;
 alter table public.chapter_resources  enable row level security;
 alter table public.students           enable row level security;
 alter table public.results            enable row level security;
+alter table public.test_templates     enable row level security;
 alter table public.payment_orders     enable row level security;
 alter table public.admin_profile      enable row level security;
 
@@ -438,6 +507,10 @@ create policy "admin all students" on public.students for all
 
 drop policy if exists "admin all results" on public.results;
 create policy "admin all results" on public.results for all
+  using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+
+drop policy if exists "admin all test_templates" on public.test_templates;
+create policy "admin all test_templates" on public.test_templates for all
   using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
 
 drop policy if exists "admin all payment_orders" on public.payment_orders;

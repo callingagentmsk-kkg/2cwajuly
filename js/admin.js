@@ -5,7 +5,6 @@
 
 let CURRENT_BATCHES = [];
 let CURRENT_STUDENTS = [];
-let CURRENT_STUDENT_FOR_RESULTS = null;
 
 /* ---------------- TOAST ---------------- */
 function toast(msg, type) {
@@ -452,7 +451,7 @@ function batchBlock(b) {
     <div class="a-batch-block-head" data-toggle="${b.id}">
       <div class="a-flex">
         <div style="width:40px;height:40px;border-radius:10px;background:${b.color || '#4C3CE3'}22; color:${b.color || '#4C3CE3'}; display:flex; align-items:center; justify-content:center;"><i class="fa-solid ${b.icon || 'fa-layer-group'}"></i></div>
-        <div><h4>${esc(b.title)}</h4><span style="font-size:.78rem; color:var(--a-gray);">${esc(b.subtitle || '')} ${b.price ? '• ₹' + esc(b.price) : ''}</span></div>
+        <div><h4>${esc(b.title)} ${b.is_free === false ? '<span class="a-tag a-tag-red" style="margin-left:6px;">PAID</span>' : '<span class="a-tag a-tag-green" style="margin-left:6px;">FREE</span>'}</h4><span style="font-size:.78rem; color:var(--a-gray);">${esc(b.subtitle || '')} ${b.price ? '• ₹' + esc(b.price) : ''}</span></div>
       </div>
       <div class="a-list-actions">
         <button class="a-btn a-btn-sm a-btn-outline" data-edit-batch="${b.id}"><i class="fa-solid fa-pen"></i></button>
@@ -570,15 +569,31 @@ function openBatchForm(batch) {
         <div class="a-field"><label>Price (₹)</label><input name="price" value="${esc(b.price)}"></div>
         <div class="a-field"><label>Payment Link (Cashfree)</label><input name="payment_link" value="${esc(b.payment_link)}"></div>
       </div>
+      <div class="a-field">
+        <label>Batch Type</label>
+        <div class="a-toggle-row">
+          <label class="a-switch">
+            <input type="checkbox" name="is_free" ${b.is_free !== false ? 'checked' : ''}>
+            <span class="a-switch-slider"></span>
+          </label>
+          <span id="aFreeLabel" style="font-size:.85rem; font-weight:600;">${b.is_free !== false ? 'FREE (sabke liye khula)' : 'PAID (locked, payment link dikhega)'}</span>
+        </div>
+      </div>
       <div class="a-modal-actions">
         <button type="button" class="a-btn a-btn-outline" onclick="closeModal()">Cancel</button>
         <button class="a-btn a-btn-primary"><i class="fa-solid fa-floppy-disk"></i> Save</button>
       </div>
     </form>
   `);
+  const freeToggle = document.querySelector('#aBatchForm input[name="is_free"]');
+  const freeLabel = document.getElementById('aFreeLabel');
+  freeToggle.addEventListener('change', () => {
+    freeLabel.textContent = freeToggle.checked ? 'FREE (sabke liye khula)' : 'PAID (locked, payment link dikhega)';
+  });
   document.getElementById('aBatchForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const data = formToObj(e.target);
+    data.is_free = freeToggle.checked;
     await AdminDB.saveBatch(data);
     closeModal(); toast('Batch save ho gaya', 'ok'); renderBatchesPanel();
   });
@@ -738,11 +753,16 @@ function openStudentForm(student) {
   });
 }
 
-/* ---------------- RESULTS ---------------- */
+/* ---------------- RESULTS (flexible Weekly Test templates + bulk marks entry) ---------------- */
+let CURRENT_RESULT_CLASS = '';
+let CURRENT_TEMPLATE_SUBJECTS = []; // working list while building/editing a template's subjects
+
 async function renderResultsPanel() {
   const el = document.getElementById('panel-results');
   el.innerHTML = `
-    <div class="a-panel-head"><div><h3>Student Results</h3><p>Class chunein, phir student select karke marks entry karein.</p></div></div>
+    <div class="a-panel-head">
+      <div><h3>Student Results</h3><p>Class chunein → Weekly Test banayein (jitne subjects chahiye) → sabhi students ke marks ek grid mein bhar dein.</p></div>
+    </div>
     <div class="a-card">
       <div class="a-field" style="max-width:220px;"><label>Class Chunein</label>
         <select id="aResultClassFilter">
@@ -751,89 +771,215 @@ async function renderResultsPanel() {
           <option value="11">Class 11</option><option value="12">Class 12</option>
         </select>
       </div>
-      <div id="aResultStudentList"></div>
+      <div id="aResultClassBody"></div>
     </div>
   `;
   document.getElementById('aResultClassFilter').addEventListener('change', async (e) => {
-    const cls = e.target.value;
-    const listEl = document.getElementById('aResultStudentList');
-    if (!cls) { listEl.innerHTML = ''; return; }
-    const students = await AdminDB.listStudents(cls);
-    if (!students.length) { listEl.innerHTML = emptyState('fa-user-graduate', 'Iss class mein koi student nahi hai. Pehle "Student Data" se add karein.'); return; }
-    listEl.innerHTML = students.map(s => `<div class="a-list-row">
-      <div class="a-list-main"><b>${esc(s.name)}</b><span>Mobile: ${esc(s.mobile)}</span></div>
-      <div class="a-list-actions"><button class="a-btn a-btn-sm a-btn-primary" data-view-results="${s.id}"><i class="fa-solid fa-chart-simple"></i> Results</button></div>
-    </div>`).join('');
-    listEl.querySelectorAll('[data-view-results]').forEach(b => b.addEventListener('click', () => {
-      const student = students.find(x => String(x.id) === b.getAttribute('data-view-results'));
-      openStudentResultsModal(student);
-    }));
+    CURRENT_RESULT_CLASS = e.target.value;
+    await renderResultClassBody();
   });
 }
-async function openStudentResultsModal(student) {
-  CURRENT_STUDENT_FOR_RESULTS = student;
-  const results = await AdminDB.listResultsForStudent(student.id);
-  openModal(`
-    <h3>${esc(student.name)} — Results <i class="fa-solid fa-xmark close" onclick="closeModal()"></i></h3>
-    <button class="a-btn a-btn-primary a-btn-sm a-mb" id="aAddResult"><i class="fa-solid fa-plus"></i> Naya Test Result</button>
-    <div id="aResultsListInner">
-      ${results.length ? results.map(resultRow).join('') : '<p style="color:var(--a-gray); font-size:.85rem;">Koi result nahi hai.</p>'}
+
+async function renderResultClassBody() {
+  const bodyEl = document.getElementById('aResultClassBody');
+  if (!CURRENT_RESULT_CLASS) { bodyEl.innerHTML = ''; return; }
+  const [templates, students] = await Promise.all([
+    AdminDB.listTestTemplates(CURRENT_RESULT_CLASS),
+    AdminDB.listStudents(CURRENT_RESULT_CLASS)
+  ]);
+  bodyEl.innerHTML = `
+    <div style="display:flex; align-items:center; justify-content:space-between; margin:16px 0 10px;">
+      <b style="font-size:.9rem;">Weekly Tests — Class ${esc(CURRENT_RESULT_CLASS)}</b>
+      <button class="a-btn a-btn-primary a-btn-sm" id="aAddTemplate"><i class="fa-solid fa-plus"></i> Naya Weekly Test</button>
     </div>
-  `);
-  document.getElementById('aAddResult').onclick = () => openResultForm(student, null);
-  results.forEach(r => {
-    document.getElementById('aResEdit' + r.id)?.addEventListener('click', () => openResultForm(student, r));
-    document.getElementById('aResDel' + r.id)?.addEventListener('click', () => {
-      confirmDelete('Ye result delete ho jayega.', async () => {
-        await AdminDB.deleteResult(r.id);
-        toast('Result delete ho gaya', 'ok');
-        openStudentResultsModal(student);
+    <div id="aTemplateList">
+      ${!students.length ? emptyState('fa-user-graduate', 'Iss class mein koi student nahi hai. Pehle "Student Data" se add karein.') :
+        (templates.length ? templates.map(templateRow).join('') : emptyState('fa-clipboard-list', 'Abhi tak koi Weekly Test nahi banaya gaya.'))}
+    </div>
+  `;
+  document.getElementById('aAddTemplate').onclick = () => openTemplateForm(null);
+  if (students.length) {
+    templates.forEach(t => {
+      document.getElementById('aTplFill' + t.id)?.addEventListener('click', () => openMarksGrid(t, students));
+      document.getElementById('aTplEdit' + t.id)?.addEventListener('click', () => openTemplateForm(t));
+      document.getElementById('aTplDel' + t.id)?.addEventListener('click', () => {
+        confirmDelete('Ye Weekly Test aur iske sabhi students ke marks delete ho jayenge.', async () => {
+          await AdminDB.deleteTestTemplate(t.id);
+          toast('Weekly Test delete ho gaya', 'ok');
+          renderResultClassBody();
+        });
       });
     });
-  });
+  }
 }
-function resultRow(r) {
-  return `<div class="a-list-row" id="aResultRow-${r.id}">
-    <div class="a-list-main"><b>${esc(r.test_name || 'Weekly Test')} — ${r.test_date ? esc(r.test_date) : ''}</b>
-      <span>Phy:${r.physics ?? '-'} Chem:${r.chemistry ?? '-'} Maths:${r.maths ?? '-'} • Total: ${r.total ?? '-'}/${r.out_of ?? 75} (${r.percentage ?? '-'}%) • Grade: ${r.grade ?? '-'}</span>
+
+function templateRow(t) {
+  const subjNames = (t.subjects || []).map(s => `${esc(s.name)} /${s.max_marks}`).join(', ');
+  return `<div class="a-template-row" id="aTemplate-${t.id}">
+    <div>
+      <b>${esc(t.test_name)}</b> <span style="color:var(--a-gray); font-size:.8rem;">— ${esc(t.test_date)}</span>
+      <div style="font-size:.78rem; color:var(--a-gray); margin-top:2px;">${subjNames || 'Koi subject nahi'}</div>
     </div>
     <div class="a-list-actions">
-      <button class="a-btn a-btn-sm a-btn-outline" id="aResEdit${r.id}"><i class="fa-solid fa-pen"></i></button>
-      <button class="a-btn a-btn-sm a-btn-danger" id="aResDel${r.id}"><i class="fa-solid fa-trash"></i></button>
+      <button class="a-btn a-btn-sm a-btn-primary" id="aTplFill${t.id}"><i class="fa-solid fa-table-list"></i> Marks Bharein</button>
+      <button class="a-btn a-btn-sm a-btn-outline" id="aTplEdit${t.id}"><i class="fa-solid fa-pen"></i></button>
+      <button class="a-btn a-btn-sm a-btn-danger" id="aTplDel${t.id}"><i class="fa-solid fa-trash"></i></button>
     </div>
   </div>`;
 }
-function openResultForm(student, result) {
-  const r = result || {};
+
+/* ---- Create / Edit a Weekly Test template (choose subjects + max marks) ---- */
+function openTemplateForm(template) {
+  const t = template || { class: CURRENT_RESULT_CLASS, test_name: 'Weekly Test', test_date: new Date().toISOString().slice(0,10) };
+  CURRENT_TEMPLATE_SUBJECTS = (t.subjects || []).map(s => Object.assign({}, s));
+  // Sensible starting point for a brand-new template: Physics/Chemistry/Maths
+  // pre-ticked at 25 marks each (the school's usual pattern) — admin can
+  // remove any of them or add a custom subject for a 1-subject/2-subject test.
+  if (!template) {
+    CURRENT_TEMPLATE_SUBJECTS = [
+      { name: 'Physics', max_marks: 25 },
+      { name: 'Chemistry', max_marks: 25 },
+      { name: 'Maths', max_marks: 25 }
+    ];
+  }
   openModal(`
-    <h3>${result ? 'Result Edit Karein' : 'Naya Test Result'} <i class="fa-solid fa-xmark close" onclick="closeModal()"></i></h3>
-    <form id="aResultForm">
+    <h3>${template ? 'Weekly Test Edit Karein' : 'Naya Weekly Test'} <i class="fa-solid fa-xmark close" onclick="closeModal()"></i></h3>
+    <form id="aTemplateForm">
       <div class="a-grid-2">
-        <div class="a-field"><label>Test Name</label><input name="test_name" value="${esc(r.test_name || 'Weekly Test')}" required></div>
-        <div class="a-field"><label>Test Date</label><input type="date" name="test_date" value="${esc(r.test_date) || new Date().toISOString().slice(0,10)}"></div>
+        <div class="a-field"><label>Test Name</label><input name="test_name" value="${esc(t.test_name)}" required></div>
+        <div class="a-field"><label>Test Date</label><input type="date" name="test_date" value="${esc(t.test_date)}" required></div>
       </div>
-      <div class="a-grid-3">
-        <div class="a-field"><label>Physics Marks (max 25)</label><input type="number" name="physics" value="${esc(r.physics)}" required></div>
-        <div class="a-field"><label>Chemistry Marks (max 25)</label><input type="number" name="chemistry" value="${esc(r.chemistry)}" required></div>
-        <div class="a-field"><label>Maths Marks (max 25)</label><input type="number" name="maths" value="${esc(r.maths)}" required></div>
+      <div class="a-field">
+        <label>Subjects &amp; Max Marks (jitne chahiye utne rakhein — 1, 2 ya 3+)</label>
+        <div id="aTplSubjectTags" class="a-subject-tags"></div>
+        <div class="a-flex" style="margin-top:10px; gap:8px;">
+          <input id="aNewSubjectName" placeholder="Subject naam (jaise Physics)" style="flex:1;">
+          <input id="aNewSubjectMax" type="number" placeholder="Max Marks" style="width:110px;" value="25">
+          <button type="button" class="a-btn a-btn-outline a-btn-sm" id="aAddSubjectBtn"><i class="fa-solid fa-plus"></i> Add</button>
+        </div>
       </div>
-      <div class="a-field"><label>Out Of (Total of all 3 subjects, default 75)</label><input type="number" name="out_of" value="${esc(r.out_of || 75)}"></div>
       <div class="a-modal-actions">
         <button type="button" class="a-btn a-btn-outline" onclick="closeModal()">Cancel</button>
-        <button class="a-btn a-btn-primary"><i class="fa-solid fa-floppy-disk"></i> Publish Result</button>
+        <button class="a-btn a-btn-primary"><i class="fa-solid fa-floppy-disk"></i> Save Test</button>
       </div>
     </form>
   `);
-  document.getElementById('aResultForm').addEventListener('submit', async (e) => {
+  renderTplSubjectTags();
+  document.getElementById('aAddSubjectBtn').addEventListener('click', () => {
+    const nameEl = document.getElementById('aNewSubjectName');
+    const maxEl = document.getElementById('aNewSubjectMax');
+    const name = nameEl.value.trim();
+    const max = Number(maxEl.value) || 0;
+    if (!name) { toast('Subject naam likhein', 'err'); return; }
+    if (CURRENT_TEMPLATE_SUBJECTS.some(s => s.name.toLowerCase() === name.toLowerCase())) { toast('Ye subject already added hai', 'err'); return; }
+    CURRENT_TEMPLATE_SUBJECTS.push({ name, max_marks: max });
+    nameEl.value = ''; maxEl.value = '25';
+    renderTplSubjectTags();
+  });
+  document.getElementById('aTemplateForm').addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (!CURRENT_TEMPLATE_SUBJECTS.length) { toast('Kam se kam 1 subject add karein', 'err'); return; }
     const data = formToObj(e.target);
-    data.student_id = student.id;
-    if (result && result.id) data.id = result.id;
-    await AdminDB.saveResult(data);
-    toast('Result publish ho gaya', 'ok');
-    openStudentResultsModal(student);
+    data.class = CURRENT_RESULT_CLASS;
+    data.subjects = CURRENT_TEMPLATE_SUBJECTS;
+    if (template && template.id) data.id = template.id;
+    await AdminDB.saveTestTemplate(data);
+    closeModal(); toast('Weekly Test save ho gaya', 'ok');
+    renderResultClassBody();
   });
 }
+function renderTplSubjectTags() {
+  const wrap = document.getElementById('aTplSubjectTags');
+  wrap.innerHTML = CURRENT_TEMPLATE_SUBJECTS.length
+    ? CURRENT_TEMPLATE_SUBJECTS.map((s, i) => `<span class="a-subject-tag">${esc(s.name)} <small style="color:var(--a-gray);">/${esc(s.max_marks)}</small> <button type="button" data-rm-subj="${i}"><i class="fa-solid fa-xmark"></i></button></span>`).join('')
+    : '<span style="font-size:.8rem; color:var(--a-gray);">Koi subject nahi add kiya.</span>';
+  wrap.querySelectorAll('[data-rm-subj]').forEach(b => b.addEventListener('click', () => {
+    CURRENT_TEMPLATE_SUBJECTS.splice(Number(b.getAttribute('data-rm-subj')), 1);
+    renderTplSubjectTags();
+  }));
+}
+
+/* ---- Bulk marks-entry grid: every student in the class x every subject in the template ----
+   Convenience: typing marks in the FIRST student's row and clicking the small
+   "Copy to all" (↓) button next to each subject column instantly fills that
+   same value into every other student's cell for that subject — so the admin
+   only needs to correct the students who scored differently. */
+async function openMarksGrid(template, students) {
+  const existing = await AdminDB.listResultsForTemplate(template.id);
+  const existingByStudent = {};
+  existing.forEach(r => { existingByStudent[r.student_id] = r; });
+  const subjects = template.subjects || [];
+
+  const rowsHtml = students.map(s => {
+    const prior = existingByStudent[s.id];
+    const priorMarksByName = {};
+    (prior && prior.subjects_marks || []).forEach(sm => { priorMarksByName[sm.name] = sm.marks; });
+    return `<tr data-student-row="${s.id}">
+      <td><b>${esc(s.name)}</b><br><small style="color:var(--a-gray);">${esc(s.mobile)}</small></td>
+      ${subjects.map(sub => `<td>
+        <input type="number" min="0" max="${esc(sub.max_marks)}"
+          data-marks-input data-student="${s.id}" data-subject="${esc(sub.name)}"
+          value="${priorMarksByName[sub.name] !== undefined ? esc(priorMarksByName[sub.name]) : ''}">
+      </td>`).join('')}
+    </tr>`;
+  }).join('');
+
+  openModal(`
+    <h3>${esc(template.test_name)} — Marks Entry <i class="fa-solid fa-xmark close" onclick="closeModal()"></i></h3>
+    <p style="color:var(--a-gray); font-size:.82rem; margin-bottom:10px;">
+      Pehle student ke marks bharein, phir uss subject ke column-header ke <i class="fa-solid fa-copy"></i> button se sabke liye same value copy kar sakte hain — sirf jinke marks alag hain unhe edit karein.
+    </p>
+    <div class="a-marks-grid-wrap">
+      <table class="a-marks-table">
+        <thead>
+          <tr>
+            <th>Student</th>
+            ${subjects.map(sub => `<th>${esc(sub.name)} <small>/${esc(sub.max_marks)}</small>
+              <button type="button" class="a-btn a-btn-outline a-btn-sm a-fill-all-btn" data-fill-subject="${esc(sub.name)}" title="Pehle row ki value sabko copy karein"><i class="fa-solid fa-copy"></i></button>
+            </th>`).join('')}
+          </tr>
+        </thead>
+        <tbody id="aMarksTbody">${rowsHtml}</tbody>
+      </table>
+    </div>
+    <div class="a-modal-actions">
+      <button type="button" class="a-btn a-btn-outline" onclick="closeModal()">Band Karein</button>
+      <button type="button" class="a-btn a-btn-primary" id="aSaveMarksBtn"><i class="fa-solid fa-floppy-disk"></i> Sabhi Marks Save Karein</button>
+    </div>
+  `);
+
+  document.querySelectorAll('[data-fill-subject]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const subj = btn.getAttribute('data-fill-subject');
+      const inputs = document.querySelectorAll(`[data-marks-input][data-subject="${cssEsc(subj)}"]`);
+      if (!inputs.length) return;
+      const firstVal = inputs[0].value;
+      if (firstVal === '') { toast('Pehle student ke marks bharein, tab copy karein', 'err'); return; }
+      inputs.forEach(inp => { if (inp.value === '') inp.value = firstVal; });
+      toast('Default value sabke liye copy ho gayi (jinke marks alag hain unhe edit karein)', 'ok');
+    });
+  });
+
+  document.getElementById('aSaveMarksBtn').addEventListener('click', async () => {
+    const btn = document.getElementById('aSaveMarksBtn');
+    btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+    const entries = students.map(s => {
+      const marks = {};
+      subjects.forEach(sub => {
+        const inp = document.querySelector(`[data-marks-input][data-student="${s.id}"][data-subject="${cssEsc(sub.name)}"]`);
+        marks[sub.name] = inp && inp.value !== '' ? Number(inp.value) : 0;
+      });
+      return { student_id: s.id, marks };
+    });
+    await AdminDB.bulkSaveResults(template, entries);
+    btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Sabhi Marks Save Karein';
+    toast('Sabhi students ke marks save ho gaye', 'ok');
+    closeModal();
+    renderResultClassBody();
+  });
+}
+// Escapes a value for safe use inside a CSS attribute-selector string.
+function cssEsc(v) { return String(v).replace(/(["\\])/g, '\\$1'); }
 
 /* ---------------- UTILS ---------------- */
 function esc(v) {
