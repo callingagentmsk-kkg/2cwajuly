@@ -34,19 +34,13 @@ html{
 }
 
 /* =========================================================
-   FORCE DESKTOP-STYLE LAYOUT ON ALL DEVICES (incl. mobile)
-   The <meta name="viewport" content="width=1280"> tag makes
-   mobile browsers render using a 1280px virtual viewport
-   instead of the device's real width. That alone is usually
-   enough to show the desktop layout, but we also neutralise
-   the min-width based responsive rules below by min-width
-   media queries that only relax layout for genuinely small
-   *physical* CSS px environments (rare edge case browsers
-   that ignore the viewport meta). This block guarantees a
-   sane minimum canvas so nothing collapses to a mobile view.
+   MOBILE-FRIENDLY LAYOUT
+   The site now uses a real "width=device-width" viewport, so
+   every @media (max-width: ...) rule below applies naturally
+   on phones/tablets — no forced desktop canvas, no manual
+   pinch-zoom needed, no scaled-canvas side effects on fixed
+   elements (header, video modal, WhatsApp button).
 ========================================================= */
-body{ min-width: 1280px; }
-.section-container{ min-width: 0; }
 body{
   font-family: var(--font-body);
   color: var(--dark);
@@ -415,16 +409,33 @@ input, select{ font-family: inherit; }
 /* ============ BATCHES ============ */
 .batches-section{ padding: 70px 0; background: var(--light-bg); }
 .batch-tabs{
-  display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom: 34px;
+  display:flex; justify-content:center; gap:16px; flex-wrap:wrap; margin-bottom: 34px;
 }
+/* Batch tabs as compact "poster" cards: badge (FREE/PAID) + image/icon + Class label,
+   all visible at a glance so students instantly know what each batch is & its status. */
 .batch-tab{
-  padding: 11px 26px; border-radius: 30px; font-weight:700; font-size:.92rem;
-  background:#fff; color: var(--dark2); box-shadow: var(--shadow-soft); transition:.3s;
+  position:relative; display:flex; flex-direction:column; align-items:center; gap:8px;
+  width:118px; padding: 16px 10px 12px; border-radius: 16px; font-weight:700; font-size:.92rem;
+  background:#fff; color: var(--dark2); box-shadow: var(--shadow-soft); transition:.3s; text-align:center;
 }
 .batch-tab.active, .batch-tab:hover{
   background: linear-gradient(135deg, var(--primary), var(--primary-light)); color:#fff;
-  transform: translateY(-2px);
+  transform: translateY(-4px); box-shadow: var(--shadow-strong);
 }
+.batch-tab-badge{
+  position:absolute; top:-9px; right:-6px; display:inline-flex; align-items:center; gap:4px;
+  font-size:.6rem; font-weight:800; letter-spacing:.3px; padding:3px 8px; border-radius:20px;
+  text-transform:uppercase; box-shadow: 0 2px 6px rgba(0,0,0,.15); z-index:2;
+}
+.batch-tab-badge.free{ background:#0e9f6e; color:#fff; }
+.batch-tab-badge.paid{ background:#d63333; color:#fff; }
+.batch-tab-media{ width:56px; height:56px; border-radius:14px; overflow:hidden; flex-shrink:0; }
+.batch-tab-img{ width:100%; height:100%; object-fit:cover; display:block; }
+.batch-tab-icon{
+  width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:1.35rem; border-radius:14px;
+}
+.batch-tab-label{ font-size:.86rem; line-height:1.2; }
 
 .batch-panel{ display:none; }
 .batch-panel.active{ display:block; animation: fadeSlide .5s ease; }
@@ -502,6 +513,21 @@ input, select{ font-family: inherit; }
 .chapter-btn.video:hover{ filter:brightness(1.08); }
 .chapter-btn.pdf{ background: rgba(255,107,107,0.12); color: var(--accent); }
 .chapter-btn.pdf:hover{ background: var(--accent); color:#fff; }
+
+@media (max-width:700px){
+  .batch-tab{ width:96px; padding:12px 6px 10px; }
+  .batch-tab-media{ width:46px; height:46px; }
+  .batch-tab-label{ font-size:.78rem; }
+  .batch-panel-head{ padding:16px; gap:12px; }
+  .batch-panel-price{ margin-left:0; width:100%; text-align:left; }
+  .chapter-grid{ grid-template-columns: 1fr; }
+  .chapter-actions{ flex-wrap:wrap; }
+  .chapter-btn{ flex: 1 1 100%; }
+}
+@media (max-width:420px){
+  .batch-tab{ width:84px; }
+  .batch-panel-icon, .batch-panel-img{ width:60px; height:60px; }
+}
 
 /* ============ VIDEO MODAL ============ */
 .video-modal{

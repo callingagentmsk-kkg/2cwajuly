@@ -148,6 +148,8 @@ input, select, textarea{ font-family:inherit; }
   padding:5px 10px; border-radius:20px; font-size:.76rem; font-weight:600; margin:4px 6px 0 0;
 }
 .a-resource-chip button{ background:none; border:none; color:#d63333; font-size:.8rem; padding:0; }
+.a-resource-chip.disabled{ background:#f0f0f0; color:#999; opacity:.7; }
+.a-resource-chip.disabled i.fa-file-pdf{ color:#aaa; }
 
 /* Modal */
 .a-modal-overlay{
@@ -182,6 +184,10 @@ input, select, textarea{ font-family:inherit; }
 }
 .a-switch input:checked + .a-switch-slider{ background:#0e9f6e; }
 .a-switch input:checked + .a-switch-slider::before{ transform:translateX(24px); }
+/* Compact variant used inline for per-chapter video / per-resource ON-OFF toggles */
+.a-switch-sm{ width:38px; height:20px; }
+.a-switch-sm .a-switch-slider::before{ height:15px; width:15px; left:2.5px; bottom:2.5px; }
+.a-switch-sm input:checked + .a-switch-slider::before{ transform:translateX(17px); }
 
 /* ---- Bulk marks-entry grid (Weekly Test results) ---- */
 .a-marks-grid-wrap{ overflow-x:auto; }

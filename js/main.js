@@ -112,8 +112,9 @@ document.addEventListener('DOMContentLoaded', async () => {
               name: s.name, icon: s.icon,
               chapters: (s.chapters || []).sort((a, c) => (a.sort_order||0) - (c.sort_order||0)).map(ch => ({
                 title: ch.title, youtube: ch.youtube_id, duration: ch.duration, description: ch.description,
+                video_enabled: ch.video_enabled !== false,
                 resources: (ch.chapter_resources || []).sort((a, c) => (a.sort_order||0) - (c.sort_order||0)).map(r => ({
-                  type: r.resource_type, url: r.url, description: r.description
+                  type: r.resource_type, url: r.url, description: r.description, enabled: r.enabled !== false
                 }))
               }))
             }))
@@ -327,10 +328,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   function renderBatches() {
     if (!batchesData || !batchesData.batches) return;
 
-    // Tabs
-    batchTabsContainer.innerHTML = batchesData.batches.map((b, i) =>
-      `<button class="batch-tab ${i === 0 ? 'active' : ''}" data-batch="${b.id}">Class ${b.class}</button>`
-    ).join('');
+    // Tabs — poster-style cards: image/icon + FREE/PAID badge + Class name, all in one glance.
+    batchTabsContainer.innerHTML = batchesData.batches.map((b, i) => {
+      const tabIsFree = b.is_free !== false;
+      return `<button class="batch-tab ${i === 0 ? 'active' : ''}" data-batch="${b.id}">
+        <span class="batch-tab-badge ${tabIsFree ? 'free' : 'paid'}"><i class="fa-solid fa-${tabIsFree ? 'unlock' : 'lock'}"></i> ${tabIsFree ? 'FREE' : 'PAID'}</span>
+        <span class="batch-tab-media">
+          ${b.image_url
+            ? `<img class="batch-tab-img" src="${b.image_url}" alt="${b.title || ''}" loading="lazy">`
+            : `<span class="batch-tab-icon" style="background:${b.color || '#6C63FF'}"><i class="fa-solid fa-${b.icon || 'layer-group'}"></i></span>`}
+        </span>
+        <span class="batch-tab-label">Class ${b.class}</span>
+      </button>`;
+    }).join('');
 
     // Panels — every chapter (video + PDFs) lives INSIDE its batch/subject block.
     let html = '';
@@ -371,7 +381,9 @@ document.addEventListener('DOMContentLoaded', async () => {
           <div class="chapter-grid">`;
 
         (subject.chapters || []).forEach((ch, i) => {
-          const resources = ch.resources && ch.resources.length ? ch.resources : [];
+          // Only show resources the admin has left ENABLED — disabled ones are fully hidden (not just locked).
+          const resources = (ch.resources && ch.resources.length ? ch.resources : []).filter(r => r.enabled !== false);
+          const videoOn = ch.youtube && ch.video_enabled !== false;
           html += `
             <div class="chapter-card ${!isFree ? 'locked' : ''}" data-aos="fade-up" data-aos-delay="${(i % 3) * 80}">
               ${!isFree ? `<div class="chapter-lock-overlay"><i class="fa-solid fa-lock"></i></div>` : ''}
@@ -380,7 +392,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               ${ch.description ? `<div class="chapter-desc" style="font-size:.8rem;color:var(--gray);margin-bottom:10px;">${ch.description}</div>` : ''}
               <div class="chapter-meta"><i class="fa-regular fa-clock"></i> ${ch.duration || ''}</div>
               <div class="chapter-actions" style="flex-wrap:wrap;">
-                ${ch.youtube ? (isFree
+                ${videoOn ? (isFree
                   ? `<button class="chapter-btn video" data-yt="${ch.youtube}" data-title="${subject.name} - ${ch.title}">
                       <i class="fa-solid fa-circle-play"></i> Video
                     </button>`
@@ -394,6 +406,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                   : `<button class="chapter-btn pdf locked-btn" disabled title="Enroll karke unlock karein">
                       <i class="fa-solid fa-lock"></i> ${r.type || 'PDF'}
                     </button>`).join('')}
+                ${(!videoOn && !resources.length) ? `<div class="chapter-meta" style="font-style:italic;">Content aane wala hai...</div>` : ''}
               </div>
             </div>`;
         });

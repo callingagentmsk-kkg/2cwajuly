@@ -37,8 +37,10 @@ function loadLocalDB() {
         chapters: (s.chapters || []).map((ch, ci) => ({
           id: `${b.id}-s${si}-c${ci}`, title: ch.title, youtube_id: ch.youtube, duration: ch.duration,
           description: ch.description || '', sort_order: ci,
+          video_enabled: ch.video_enabled !== undefined ? ch.video_enabled : true,
           chapter_resources: (ch.resources || []).map((r, ri) => ({
-            id: `${b.id}-s${si}-c${ci}-r${ri}`, resource_type: r.type, url: r.url, description: r.description || '', sort_order: ri
+            id: `${b.id}-s${si}-c${ci}-r${ri}`, resource_type: r.type, url: r.url, description: r.description || '', sort_order: ri,
+            enabled: r.enabled !== undefined ? r.enabled : true
           }))
         }))
       }))
@@ -283,8 +285,9 @@ const AdminDB = {
   },
 
   async saveChapter(subjectId, chapter, batchId) {
+    const videoEnabled = chapter.video_enabled !== undefined ? (chapter.video_enabled === true || chapter.video_enabled === 'true' || chapter.video_enabled === 'on' || chapter.video_enabled === '1') : true;
     if (this.isSupabase()) {
-      const row = { title: chapter.title, youtube_id: chapter.youtube_id, duration: chapter.duration, description: chapter.description, sort_order: chapter.sort_order || 0 };
+      const row = { title: chapter.title, youtube_id: chapter.youtube_id, duration: chapter.duration, description: chapter.description, video_enabled: videoEnabled, sort_order: chapter.sort_order || 0 };
       if (chapter.id) await supabaseClient.from('chapters').update(row).eq('id', chapter.id);
       else { row.subject_id = subjectId; await supabaseClient.from('chapters').insert(row); }
     } else {
@@ -294,13 +297,27 @@ const AdminDB = {
       if (!subject) return;
       if (chapter.id) {
         const idx = subject.chapters.findIndex(c => c.id === chapter.id);
-        if (idx >= 0) subject.chapters[idx] = Object.assign({}, subject.chapters[idx], chapter);
+        if (idx >= 0) subject.chapters[idx] = Object.assign({}, subject.chapters[idx], chapter, { video_enabled: videoEnabled });
       } else {
         chapter.id = `${subjectId}-c${Date.now()}`;
         chapter.chapter_resources = [];
+        chapter.video_enabled = videoEnabled;
         chapter.sort_order = subject.chapters.length;
         subject.chapters.push(chapter);
       }
+      saveLocalDB(db);
+    }
+  },
+  // Quick ON/OFF toggle for just a chapter's video button — does NOT touch title/youtube_id/etc.
+  async toggleChapterVideo(chapterId, enabled, batchId, subjectId) {
+    if (this.isSupabase()) {
+      await supabaseClient.from('chapters').update({ video_enabled: enabled }).eq('id', chapterId);
+    } else {
+      const db = loadLocalDB();
+      const batch = db.batches.find(b => b.id === batchId);
+      const subject = batch && batch.subjects.find(s => s.id === subjectId);
+      const chapter = subject && subject.chapters.find(c => c.id === chapterId);
+      if (chapter) chapter.video_enabled = enabled;
       saveLocalDB(db);
     }
   },
@@ -316,8 +333,9 @@ const AdminDB = {
   },
 
   async saveResource(chapterId, resource, batchId, subjectId) {
+    const enabled = resource.enabled !== undefined ? (resource.enabled === true || resource.enabled === 'true' || resource.enabled === 'on' || resource.enabled === '1') : true;
     if (this.isSupabase()) {
-      const row = { resource_type: resource.resource_type, url: resource.url, description: resource.description, sort_order: resource.sort_order || 0 };
+      const row = { resource_type: resource.resource_type, url: resource.url, description: resource.description, enabled: enabled, sort_order: resource.sort_order || 0 };
       if (resource.id) await supabaseClient.from('chapter_resources').update(row).eq('id', resource.id);
       else { row.chapter_id = chapterId; await supabaseClient.from('chapter_resources').insert(row); }
     } else {
@@ -328,12 +346,27 @@ const AdminDB = {
       if (!chapter) return;
       if (resource.id) {
         const idx = chapter.chapter_resources.findIndex(r => r.id === resource.id);
-        if (idx >= 0) chapter.chapter_resources[idx] = Object.assign({}, chapter.chapter_resources[idx], resource);
+        if (idx >= 0) chapter.chapter_resources[idx] = Object.assign({}, chapter.chapter_resources[idx], resource, { enabled: enabled });
       } else {
         resource.id = `${chapterId}-r${Date.now()}`;
+        resource.enabled = enabled;
         resource.sort_order = chapter.chapter_resources.length;
         chapter.chapter_resources.push(resource);
       }
+      saveLocalDB(db);
+    }
+  },
+  // Quick ON/OFF toggle for just one PDF/PPT resource chip — does NOT touch url/type/etc.
+  async toggleResourceEnabled(resourceId, enabled, batchId, subjectId, chapterId) {
+    if (this.isSupabase()) {
+      await supabaseClient.from('chapter_resources').update({ enabled: enabled }).eq('id', resourceId);
+    } else {
+      const db = loadLocalDB();
+      const batch = db.batches.find(b => b.id === batchId);
+      const subject = batch && batch.subjects.find(s => s.id === subjectId);
+      const chapter = subject && subject.chapters.find(c => c.id === chapterId);
+      const resource = chapter && chapter.chapter_resources.find(r => r.id === resourceId);
+      if (resource) resource.enabled = enabled;
       saveLocalDB(db);
     }
   },

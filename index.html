@@ -2,52 +2,15 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" id="viewportMeta" content="width=1280, initial-scale=1">
-<script>
-/* =========================================================
-   AUTO-FIT DESKTOP LAYOUT TO SCREEN (no manual pinch-zoom needed)
-   -----------------------------------------------------------
-   The site is intentionally built at a fixed 1280px desktop
-   canvas on every device (so mobile users see the exact same
-   rich layout as desktop, per site requirements). Simply setting
-   <meta viewport width=1280> alone makes phones render that
-   1280px canvas at initial-scale=1, which looks TINY on a ~390px
-   wide phone screen and forces the user to manually pinch-zoom in.
-   That manual zoom then causes browsers (especially iOS Safari)
-   to mis-position position:fixed elements (headers, modals, the
-   floating WhatsApp button, the video popup) because fixed
-   elements are pinned to the *layout* viewport, not what the user
-   is currently looking at after a manual pinch — this is exactly
-   what made the video popup / header appear to "float outside"
-   the page.
-   FIX: compute initial-scale = (physical screen width) / 1280 in
-   JS, using window.screen.width which reflects the true device
-   width and is NOT affected by the viewport meta itself. This
-   scales the whole 1280px desktop canvas down to exactly fill the
-   phone's screen on load — full desktop layout, fully visible,
-   zero manual zooming required. Kept editable via pinch afterwards.
-========================================================= */
-(function () {
-  var DESIGN_WIDTH = 1280;
-  var meta = document.getElementById('viewportMeta');
-  function applyScale() {
-    var sw = window.screen && window.screen.width ? window.screen.width : window.innerWidth;
-    var scale = sw / DESIGN_WIDTH;
-    if (!isFinite(scale) || scale <= 0) scale = 1;
-    if (scale > 1) scale = 1; // never zoom IN past 100% on large/desktop screens
-    if (scale < 0.15) scale = 0.15; // sanity floor
-    var s = scale.toFixed(4);
-    meta.setAttribute('content',
-      'width=' + DESIGN_WIDTH +
-      ', initial-scale=' + s +
-      ', minimum-scale=' + s +
-      ', maximum-scale=5, user-scalable=yes');
-  }
-  applyScale();
-  window.addEventListener('resize', applyScale);
-  window.addEventListener('orientationchange', function () { setTimeout(applyScale, 250); });
-})();
-</script>
+<!-- Real responsive viewport: mobile gets its OWN full-screen mobile layout
+     (see css/style.css @media rules) instead of a scaled-down desktop canvas.
+     This lets every @media (max-width: ...) rule in the CSS actually apply
+     on real phones, and fixes position:fixed elements (header, video modal,
+     floating WhatsApp button) which used to "float outside" the page when
+     the old 1280px-canvas-scaled-to-fit trick was combined with pinch-zoom. -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="mobile-web-app-capable" content="yes">
 <title>CWA SCIENCE CLASSES | Concept with Abhishek - Best Coaching for Class 9-12 PCM (Bihar Board)</title>
 <meta name="description" content="CWA SCIENCE CLASSES - Concept with Abhishek. Class 9 to 12 Physics, Chemistry, Maths (Bihar Board) taught by Abhishek Garg Sir. Watch batch videos, download PDF notes, check weekly test results online.">
 <meta name="theme-color" content="#4C3CE3">
