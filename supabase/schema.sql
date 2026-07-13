@@ -112,24 +112,30 @@ create table if not exists public.subjects (
 );
 
 create table if not exists public.chapters (
-  id           bigint generated always as identity primary key,
-  subject_id   bigint not null references public.subjects(id) on delete cascade,
-  title        text not null,
-  youtube_id   text,             -- YouTube video ID (not full URL)
-  duration     text,
-  description  text,             -- helpful notes/description shown to students
-  sort_order   int not null default 0
+  id             bigint generated always as identity primary key,
+  subject_id     bigint not null references public.subjects(id) on delete cascade,
+  title          text not null,
+  youtube_id     text,             -- YouTube video ID (not full URL)
+  duration       text,
+  description    text,             -- helpful notes/description shown to students
+  video_enabled  boolean not null default true,  -- admin can hide/disable just the video button
+  sort_order     int not null default 0
 );
+-- For existing databases created before this column existed:
+alter table public.chapters add column if not exists video_enabled boolean not null default true;
 
--- 2 or more PDF-type resources per chapter (e.g. "PPT Notes", "Text Notes")
+-- 2 or more PDF/PPT-type resources per chapter (e.g. "PPT Notes", "Text Notes")
 create table if not exists public.chapter_resources (
   id             bigint generated always as identity primary key,
   chapter_id     bigint not null references public.chapters(id) on delete cascade,
   resource_type  text not null default 'PDF Notes',  -- label shown on button
   url            text not null,                      -- link to the PDF
   description    text,                               -- short text describing this resource
+  enabled        boolean not null default true,      -- admin can hide/disable just this PDF/PPT
   sort_order     int not null default 0
 );
+-- For existing databases created before this column existed:
+alter table public.chapter_resources add column if not exists enabled boolean not null default true;
 
 -- =========================================================================
 -- 5. STUDENTS  (Student Data section in Admin Panel)

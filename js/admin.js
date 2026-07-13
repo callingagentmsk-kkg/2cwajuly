@@ -479,17 +479,29 @@ function subjectBlock(b, sub) {
   </div>`;
 }
 function chapterRow(b, sub, ch) {
+  const videoOn = ch.video_enabled !== false;
   return `<div class="a-chapter-row" id="aChapter-${ch.id}">
     <div class="a-flex-between">
       <div><b style="font-size:.88rem;">${esc(ch.title)}</b><div style="font-size:.76rem; color:var(--a-gray);">YouTube: ${esc(ch.youtube_id)} • ${esc(ch.duration || '')}</div></div>
       <div class="a-list-actions">
+        ${ch.youtube_id ? `<label class="a-switch a-switch-sm" title="Video ON/OFF">
+          <input type="checkbox" data-toggle-video="${b.id}|${sub.id}|${ch.id}" ${videoOn ? 'checked' : ''}>
+          <span class="a-switch-slider"></span>
+        </label>` : ''}
         <button class="a-btn a-btn-sm a-btn-outline" data-edit-chapter="${b.id}|${sub.id}|${ch.id}"><i class="fa-solid fa-pen"></i></button>
         <button class="a-btn a-btn-sm a-btn-danger" data-del-chapter="${b.id}|${sub.id}|${ch.id}"><i class="fa-solid fa-trash"></i></button>
         <button class="a-btn a-btn-sm a-btn-primary" data-add-resource="${b.id}|${sub.id}|${ch.id}"><i class="fa-solid fa-file-arrow-up"></i> PDF</button>
       </div>
     </div>
     <div style="margin-top:8px;">
-      ${(ch.chapter_resources || []).map(r => `<span class="a-resource-chip"><i class="fa-solid fa-file-pdf"></i> ${esc(r.resource_type)} <button data-del-resource="${b.id}|${sub.id}|${ch.id}|${r.id}"><i class="fa-solid fa-xmark"></i></button></span>`).join('') || '<span style="font-size:.76rem; color:var(--a-gray);">Koi PDF nahi hai.</span>'}
+      ${(ch.chapter_resources || []).map(r => `<span class="a-resource-chip ${r.enabled === false ? 'disabled' : ''}">
+          <label class="a-switch a-switch-sm" title="Resource ON/OFF">
+            <input type="checkbox" data-toggle-resource="${b.id}|${sub.id}|${ch.id}|${r.id}" ${r.enabled !== false ? 'checked' : ''}>
+            <span class="a-switch-slider"></span>
+          </label>
+          <i class="fa-solid fa-file-pdf"></i> ${esc(r.resource_type)}
+          <button data-del-resource="${b.id}|${sub.id}|${ch.id}|${r.id}"><i class="fa-solid fa-xmark"></i></button>
+        </span>`).join('') || '<span style="font-size:.76rem; color:var(--a-gray);">Koi PDF nahi hai.</span>'}
     </div>
   </div>`;
 }
@@ -549,6 +561,20 @@ function wireBatchEvents() {
     confirmDelete('Ye PDF resource delete ho jayega.', async () => {
       await AdminDB.deleteResource(batchId, subId, chId, resId); toast('Resource delete ho gaya', 'ok'); renderBatchesPanel();
     });
+  }));
+  // Quick ON/OFF toggle for a chapter's video button — students see/hide instantly, nothing deleted.
+  document.querySelectorAll('[data-toggle-video]').forEach(cb => cb.addEventListener('change', async () => {
+    const [batchId, subId, chId] = cb.getAttribute('data-toggle-video').split('|');
+    await AdminDB.toggleChapterVideo(chId, cb.checked, batchId, subId);
+    toast(cb.checked ? 'Video ON kar diya' : 'Video OFF kar diya', 'ok');
+    renderBatchesPanel();
+  }));
+  // Quick ON/OFF toggle for a single PDF/PPT resource chip — hides just that one item, nothing deleted.
+  document.querySelectorAll('[data-toggle-resource]').forEach(cb => cb.addEventListener('change', async () => {
+    const [batchId, subId, chId, resId] = cb.getAttribute('data-toggle-resource').split('|');
+    await AdminDB.toggleResourceEnabled(resId, cb.checked, batchId, subId, chId);
+    toast(cb.checked ? 'Resource ON kar diya' : 'Resource OFF kar diya', 'ok');
+    renderBatchesPanel();
   }));
 }
 
