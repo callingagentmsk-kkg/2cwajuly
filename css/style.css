@@ -66,11 +66,14 @@ input, select{ font-family: inherit; }
 }
 
 .text-gradient{
-  background: linear-gradient(90deg, var(--primary), var(--accent2));
+  background: linear-gradient(90deg, var(--primary), var(--accent2), var(--accent), var(--primary));
+  background-size: 250% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  animation: gradientFlow 5s linear infinite;
 }
+@keyframes gradientFlow{ to{ background-position: 250% center; } }
 
 .section-tag{
   display:inline-block;
@@ -82,7 +85,9 @@ input, select{ font-family: inherit; }
   font-size: 0.82rem;
   margin-bottom: 12px;
   letter-spacing:.3px;
+  animation: tagFloat 3.4s ease-in-out infinite;
 }
+@keyframes tagFloat{ 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(-4px);} }
 .section-title{
   font-family: var(--font-head);
   font-size: clamp(1.6rem, 5vw, 2.6rem);
@@ -267,7 +272,13 @@ input, select{ font-family: inherit; }
 .hero-title{ font-family: var(--font-head); font-weight:900; line-height:1.12; margin-bottom:16px; }
 .hero-title .line1{ display:block; font-size: clamp(1.7rem, 4.6vw, 2.7rem); color: var(--dark); }
 .hero-title .line2{ display:block; font-size: clamp(1.7rem, 4.6vw, 2.7rem); color: var(--dark); margin-top:4px; }
-.hero-title .highlight{ color: var(--accent); position:relative; }
+.hero-title .highlight{ color: var(--accent); position:relative; display:inline-block; }
+.hero-title .highlight::after{
+  content:''; position:absolute; left:0; bottom:2px; width:100%; height:6px; border-radius:4px;
+  background: linear-gradient(90deg, var(--gold), var(--accent)); opacity:.35;
+  transform-origin:left; animation: hlSweep 3s ease-in-out infinite;
+}
+@keyframes hlSweep{ 0%,100%{ transform: scaleX(.25);} 50%{ transform: scaleX(1);} }
 .hero-desc{ font-size:1.02rem; color: var(--gray); max-width:520px; margin-bottom:26px; }
 .hero-btns{ display:flex; flex-wrap:wrap; gap:14px; margin-bottom:34px; }
 .hero .btn-outline{ background: rgba(76,60,227,0.08); border:2px solid rgba(76,60,227,0.3); color: var(--primary); }
@@ -422,6 +433,7 @@ input, select{ font-family: inherit; }
   background: linear-gradient(135deg, var(--primary), var(--primary-light)); color:#fff;
   transform: translateY(-4px); box-shadow: var(--shadow-strong);
 }
+.batch-tab:active{ transform: scale(.94); }
 .batch-tab-badge{
   position:absolute; top:-9px; right:-6px; display:inline-flex; align-items:center; gap:4px;
   font-size:.6rem; font-weight:800; letter-spacing:.3px; padding:3px 8px; border-radius:20px;
@@ -482,18 +494,57 @@ input, select{ font-family: inherit; }
 .chapter-btn.locked-btn{ background: #eee !important; color: #999 !important; cursor:not-allowed; }
 .chapter-btn.locked-btn:hover{ filter:none; background:#eee !important; color:#999 !important; }
 
-.subject-block{ margin-bottom: 30px; }
-.subject-block-title{
-  display:flex; align-items:center; gap:10px; font-family: var(--font-head); font-weight:700; font-size:1.15rem;
-  margin-bottom: 16px; color: var(--dark2);
+/* ---- SUBJECT ACCORDION (Disha-Classes style: chapters live INSIDE the subject,
+        tap subject header to expand/collapse; video plays inline inside chapter) ---- */
+.subject-block{
+  margin-bottom: 18px; background:#fff; border-radius: var(--radius);
+  box-shadow: var(--shadow-soft); overflow:hidden;
+  transition: box-shadow .3s ease;
 }
+.subject-block.open{ box-shadow: var(--shadow-strong); }
+.subject-block-title{
+  width:100%; display:flex; align-items:center; gap:12px; font-family: var(--font-head); font-weight:700; font-size:1.1rem;
+  padding: 16px 18px; color: var(--dark2); text-align:left; cursor:pointer;
+  transition: background .25s ease;
+}
+.subject-block-title:hover{ background: rgba(76,60,227,0.04); }
 .subject-block-title i{
   width:38px; height:38px; border-radius:12px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:1rem;
+  flex-shrink:0;
 }
+.subject-block-title .chap-count{
+  margin-left:auto; font-family: var(--font-body); font-style:normal; font-weight:700; font-size:.68rem;
+  color: var(--primary); background: rgba(76,60,227,0.09); padding:4px 10px; border-radius:20px;
+  white-space:nowrap; letter-spacing:.3px; text-transform:uppercase;
+}
+.subject-block-title .sb-chevron{
+  width:auto; height:auto; background:none; color: var(--gray); font-size:.85rem;
+  transition: transform .4s cubic-bezier(.4,0,.2,1);
+}
+.subject-block.open .sb-chevron{ transform: rotate(180deg); color: var(--primary); }
 
-.chapter-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(270px,1fr)); gap:18px; }
+.subject-body{
+  display:grid; grid-template-rows: 0fr;
+  transition: grid-template-rows .5s cubic-bezier(.4,0,.2,1);
+}
+.subject-block.open .subject-body{ grid-template-rows: 1fr; }
+.subject-body-inner{ overflow:hidden; min-height:0; }
+
+.chapter-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(270px,1fr)); gap:16px; padding: 4px 18px 18px; }
+
+/* staggered chapter entrance every time subject opens */
+.subject-block .chapter-card{ opacity:0; transform: translateY(16px); }
+.subject-block.open .chapter-card{ animation: chapIn .5s cubic-bezier(.22,1,.36,1) forwards; }
+.subject-block.open .chapter-card:nth-child(1){ animation-delay:.06s; }
+.subject-block.open .chapter-card:nth-child(2){ animation-delay:.13s; }
+.subject-block.open .chapter-card:nth-child(3){ animation-delay:.2s; }
+.subject-block.open .chapter-card:nth-child(4){ animation-delay:.27s; }
+.subject-block.open .chapter-card:nth-child(5){ animation-delay:.34s; }
+.subject-block.open .chapter-card:nth-child(n+6){ animation-delay:.4s; }
+@keyframes chapIn{ to{ opacity:1; transform: translateY(0); } }
+
 .chapter-card{
-  background:#fff; border-radius: var(--radius-sm); padding: 18px; box-shadow: var(--shadow-soft);
+  background: var(--light-bg); border:1px solid #ECE9FF; border-radius: var(--radius-sm); padding: 16px; 
   transition: transform .3s ease, box-shadow .3s ease; position:relative; overflow:hidden;
 }
 .chapter-card:hover{ transform: translateY(-6px); box-shadow: var(--shadow-strong); }
@@ -513,6 +564,31 @@ input, select{ font-family: inherit; }
 .chapter-btn.video:hover{ filter:brightness(1.08); }
 .chapter-btn.pdf{ background: rgba(255,107,107,0.12); color: var(--accent); }
 .chapter-btn.pdf:hover{ background: var(--accent); color:#fff; }
+.chapter-btn.video.watching{ background: linear-gradient(135deg, #d63333, var(--accent)); }
+
+/* ---- INLINE VIDEO PLAYER (video khulta hai batch ke ANDAR, chapter card ke neeche) ---- */
+.chapter-card.video-open{ grid-column: 1 / -1; box-shadow: var(--shadow-strong); background:#fff; }
+.chapter-inline-video{
+  margin-top: 14px; border-radius: 14px; overflow:hidden; background: var(--dark);
+  box-shadow: 0 14px 34px rgba(20,20,43,0.35);
+  animation: ivIn .5s cubic-bezier(.22,1,.36,1);
+}
+@keyframes ivIn{ from{ opacity:0; transform: translateY(18px) scale(.97); } to{ opacity:1; transform: translateY(0) scale(1); } }
+.iv-head{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  color:#fff; padding: 10px 14px; font-size:.84rem; font-weight:700;
+  background: linear-gradient(90deg, var(--primary-dark), var(--dark));
+}
+.iv-head span{ display:flex; align-items:center; gap:8px; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.iv-head span i{ color: var(--gold); animation: labelIconPulse 2s ease-in-out infinite; }
+.iv-close{
+  width:30px; height:30px; border-radius:50%; flex-shrink:0; color:#fff;
+  background: rgba(255,255,255,0.14); display:flex; align-items:center; justify-content:center;
+  transition: background .25s ease, transform .25s ease;
+}
+.iv-close:hover{ background: var(--accent); transform: rotate(90deg); }
+.iv-frame{ position:relative; width:100%; padding-top:56.25%; }
+.iv-frame iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
 
 @media (max-width:700px){
   .batch-tab{ width:96px; padding:12px 6px 10px; }
@@ -793,6 +869,129 @@ input, select{ font-family: inherit; }
 
 /* ============ AOS-lite fallback ============ */
 [data-aos]{ transition-property: transform, opacity; }
+
+/* =========================================================
+   MOBILE COMPACT — "PC-like" density on phones
+   Desktop jaisi hi feel: multi-column grids + chhote compact
+   elements, taaki mobile par kuch bhi zyada bada/zoomed na lage.
+   (Ye block file ke END me hai isliye upar ke purane mobile
+    rules ko override kar deta hai.)
+========================================================= */
+@media (max-width: 700px){
+  :root{ --header-h: 58px; }
+  .section-container{ padding: 0 14px; }
+
+  /* Header compact */
+  .brand-logo{ width:34px; height:34px; }
+  .brand-main{ font-size:.88rem; }
+  .brand-sub{ font-size:.54rem; }
+
+  /* Hero compact (PC-like proportions, no giant zoomed look) */
+  .hero{ padding: 24px 0 30px; min-height: auto; }
+  .hero-visual{ margin-top: 4px; }
+  .hero-float-img{ max-width: 225px; }
+  .hero-title .line1, .hero-title .line2{ font-size: 1.4rem; }
+  .hero-desc{ font-size: .85rem; margin-bottom: 16px; }
+  .hero-eyebrow{ font-size: .68rem; padding: 5px 12px; margin-bottom: 10px; }
+  .btn{ padding: 10px 18px; font-size: .82rem; }
+  .hero-btns{ gap: 10px; margin-bottom: 18px; }
+  .hero-stats{ gap: 14px; }
+  .hero-stats .num{ font-size: 1.2rem; }
+  .hero-stats small{ font-size: .6rem; }
+  .hero-dots{ margin-top: 16px; }
+
+  /* Section headings compact */
+  .section-title{ font-size: 1.35rem; }
+  .section-desc{ font-size: .84rem; }
+  .section-tag{ font-size: .68rem; padding: 5px 12px; margin-bottom: 8px; }
+  .section-head{ margin-bottom: 20px; }
+
+  /* Notice bar compact */
+  .notice-label{ font-size: .68rem; padding: 8px 14px; padding-right: 24px; }
+  .marquee-track{ font-size: .74rem; }
+
+  /* Subjects strip: PC jaisi hi 3-column row */
+  .subjects-strip{ padding: 26px 0 10px; }
+  .subjects-strip .section-container{ grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .subject-card{ padding: 14px 6px; border-radius: 14px; }
+  .subject-icon-3d{ width: 44px; height: 44px; font-size: 1.1rem; border-radius: 13px; margin-bottom: 8px; }
+  .subject-card h3{ font-size: .86rem; }
+  .subject-card p{ font-size: .58rem; }
+
+  /* Sections compact padding */
+  .about-section, .batches-section, .result-section, .why-section, .contact-section{ padding: 42px 0; }
+
+  /* About compact */
+  .about-img-frame{ max-width: 225px; }
+  .exp-badge{ width: 72px; height: 72px; bottom: -10px; right: -4px; }
+  .exp-num{ font-size: 1.15rem; }
+  .exp-label{ font-size: .48rem; }
+  .about-role{ font-size: .84rem; }
+  .about-text{ font-size: .84rem; }
+  .about-points li{ font-size: .8rem; }
+
+  /* Batches compact */
+  .batch-tabs{ gap: 10px; margin-bottom: 22px; }
+  .batch-panel-head{ padding: 14px; gap: 12px; }
+  .batch-panel-head h3{ font-size: 1.05rem; }
+  .batch-panel-head p{ font-size: .76rem; }
+  .batch-panel-img, .batch-panel-icon{ width: 58px; height: 58px; }
+
+  /* Subject accordion compact */
+  .subject-block-title{ padding: 13px 14px; font-size: .95rem; gap: 10px; }
+  .subject-block-title i{ width: 32px; height: 32px; font-size: .85rem; border-radius: 10px; }
+  .subject-block-title .chap-count{ font-size: .58rem; padding: 3px 8px; }
+
+  /* Chapters: PC jaisa 2-column grid (bada single-column zoom look hataya) */
+  .chapter-grid{ grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 2px 12px 14px; }
+  .chapter-card{ padding: 12px; }
+  .chapter-num{ font-size: .58rem; }
+  .chapter-title{ font-size: .8rem; min-height: 34px; margin: 5px 0 8px; }
+  .chapter-desc{ display: none; } /* compact: lambi description mobile par hide */
+  .chapter-meta{ font-size: .64rem; margin-bottom: 10px; }
+  .chapter-actions{ gap: 6px; flex-wrap: wrap; }
+  .chapter-btn{ padding: 8px 6px; font-size: .68rem; border-radius: 8px; flex: 1 1 auto; }
+  .chapter-card.video-open{ grid-column: 1 / -1; }
+  .iv-head{ font-size: .74rem; padding: 8px 10px; }
+
+  .batch-locked-banner{ font-size: .76rem; padding: 12px 14px; }
+
+  /* Result compact */
+  .result-box{ padding: 20px 14px; border-radius: 18px; }
+  .form-group select, .form-group input{ padding: 11px 14px; font-size: .88rem; }
+  .form-group label{ font-size: .78rem; }
+  .result-table{ min-width: 480px; }
+
+  /* Why cards: PC jaisa 2-column grid */
+  .why-grid{ grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .why-card{ padding: 16px 10px; }
+  .why-icon{ width: 44px; height: 44px; font-size: 1.05rem; margin-bottom: 10px; }
+  .why-card h3{ font-size: .84rem; }
+  .why-card p{ font-size: .68rem; }
+
+  /* Contact compact */
+  .contact-item{ padding: 14px; gap: 12px; }
+  .ci-icon{ width: 40px; height: 40px; font-size: 1rem; }
+  .contact-item h4{ font-size: .84rem; }
+  .contact-item a, .contact-item p{ font-size: .8rem; }
+  .social-btn{ width: 42px; height: 42px; font-size: 1.05rem; }
+
+  /* Footer compact */
+  .footer-top{ padding: 38px 0 22px; }
+  .footer-grid{ gap: 22px; }
+  .footer-about{ font-size: .78rem; }
+  .footer-col ul a{ font-size: .8rem; }
+  .footer-phone{ font-size: 1.1rem; }
+  .footer-address, .footer-email{ font-size: .76rem; }
+  .footer-bottom{ font-size: .7rem; padding: 14px 0; }
+
+  .floating-whatsapp{ width: 48px; height: 48px; font-size: 1.5rem; bottom: 16px; right: 14px; }
+}
+
+@media (max-width: 360px){
+  .chapter-title{ font-size: .74rem; }
+  .why-card p{ font-size: .64rem; }
+}
 
 /* ============ Utility: reduce motion ============ */
 @media (prefers-reduced-motion: reduce){
