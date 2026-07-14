@@ -370,14 +370,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         </div>`;
       }
 
-      (batch.subjects || []).forEach(subject => {
+      (batch.subjects || []).forEach((subject, sIdx) => {
         const iconInfo = subjectIconMap[subject.name] || { icon: 'fa-book' };
         const grad = subjectColorMap[subject.name] || 'linear-gradient(135deg,#999,#666)';
-        html += `<div class="subject-block ${!isFree ? 'locked-subject' : ''}">
-          <div class="subject-block-title">
+        const chapCount = (subject.chapters || []).length;
+        // Disha-Classes style: subject is an ACCORDION — tap the header to open
+        // chapters INSIDE it; first subject of each batch starts open.
+        html += `<div class="subject-block ${!isFree ? 'locked-subject' : ''} ${sIdx === 0 ? 'open' : ''}">
+          <button type="button" class="subject-block-title" aria-expanded="${sIdx === 0 ? 'true' : 'false'}">
             <i class="fa-solid ${iconInfo.icon}" style="background:${grad}"></i>
             <span>${subject.name}</span>
-          </div>
+            <span class="chap-count">${chapCount} Chapter${chapCount !== 1 ? 's' : ''}</span>
+            <i class="fa-solid fa-chevron-down sb-chevron"></i>
+          </button>
+          <div class="subject-body"><div class="subject-body-inner">
           <div class="chapter-grid">`;
 
         (subject.chapters || []).forEach((ch, i) => {
@@ -385,7 +391,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           const resources = (ch.resources && ch.resources.length ? ch.resources : []).filter(r => r.enabled !== false);
           const videoOn = ch.youtube && ch.video_enabled !== false;
           html += `
-            <div class="chapter-card ${!isFree ? 'locked' : ''}" data-aos="fade-up" data-aos-delay="${(i % 3) * 80}">
+            <div class="chapter-card ${!isFree ? 'locked' : ''}">
               ${!isFree ? `<div class="chapter-lock-overlay"><i class="fa-solid fa-lock"></i></div>` : ''}
               <div class="chapter-num">Chapter ${i + 1}</div>
               <div class="chapter-title">${ch.title}</div>
@@ -411,21 +417,35 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>`;
         });
 
-        html += `</div></div>`;
+        html += `</div></div></div></div>`;
       });
 
       html += `</div>`;
     });
     batchPanelsContainer.innerHTML = html;
 
-    // Re-attach video button listeners (locked/disabled buttons have no data-yt, safe no-op)
+    // Video buttons: play INLINE inside the batch (Disha-Classes style),
+    // right below the chapter card — no full-screen modal takeover.
     document.querySelectorAll('.chapter-btn.video:not(.locked-btn)').forEach(btn => {
-      btn.addEventListener('click', () => openVideoModal(btn.dataset.yt, btn.dataset.title));
+      btn.addEventListener('click', () => toggleInlineVideo(btn));
+    });
+
+    // Subject accordion: tap header to expand/collapse chapters inside it.
+    document.querySelectorAll('.subject-block-title').forEach(head => {
+      head.addEventListener('click', () => {
+        const block = head.closest('.subject-block');
+        const willOpen = !block.classList.contains('open');
+        // Close any inline video inside a subject that is being collapsed
+        if (!willOpen) closeInlineVideo(block);
+        block.classList.toggle('open', willOpen);
+        head.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      });
     });
 
     // Re-attach tab click listeners
     document.querySelectorAll('.batch-tab').forEach(tab => {
       tab.addEventListener('click', () => {
+        closeInlineVideo(); // stop any playing video when switching batch
         document.querySelectorAll('.batch-tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
         document.querySelectorAll('.batch-panel').forEach(p => p.classList.remove('active'));
@@ -437,34 +457,56 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (window.AOS) AOS.refreshHard();
   }
 
-  renderBatches();
-
   /* =========================================================
-     VIDEO MODAL
+     INLINE VIDEO PLAYER (Disha-Classes style)
+     Video batch ke ANDAR hi khulta hai — chapter card expand hoke
+     uske neeche player aata hai. Ek waqt me sirf ek video play hota hai.
   ========================================================= */
-  const videoModal = document.getElementById('videoModal');
-  const videoFrame = document.getElementById('videoFrame');
-  const videoModalTitle = document.getElementById('videoModalTitle');
-  const videoModalClose = document.getElementById('videoModalClose');
+  function closeInlineVideo(scope) {
+    const root = scope || document;
+    root.querySelectorAll('.chapter-inline-video').forEach(el => el.remove());
+    root.querySelectorAll('.chapter-card.video-open').forEach(c => c.classList.remove('video-open'));
+    root.querySelectorAll('.chapter-btn.video.watching').forEach(b => {
+      b.classList.remove('watching');
+      b.innerHTML = '<i class="fa-solid fa-circle-play"></i> Video';
+    });
+  }
 
-  function openVideoModal(ytId, title) {
-    videoFrame.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0`;
-    videoModalTitle.textContent = title || '';
-    videoModal.classList.add('open');
-    document.body.style.overflow = 'hidden';
+  function toggleInlineVideo(btn) {
+    const card = btn.closest('.chapter-card');
+    const alreadyOpen = card.classList.contains('video-open');
+    closeInlineVideo(); // sirf ek video ek waqt par
+    if (alreadyOpen) return; // dobara click = band karo
+
+    card.classList.add('video-open');
+    btn.classList.add('watching');
+    btn.innerHTML = '<i class="fa-solid fa-circle-stop"></i> Band Karein';
+
+    const wrap = document.createElement('div');
+    wrap.className = 'chapter-inline-video';
+    wrap.innerHTML = `
+      <div class="iv-head">
+        <span><i class="fa-solid fa-circle-play"></i> ${btn.dataset.title || 'Chapter Video'}</span>
+        <button type="button" class="iv-close" aria-label="Close video"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="iv-frame">
+        <iframe src="https://www.youtube.com/embed/${btn.dataset.yt}?autoplay=1&rel=0&playsinline=1"
+          title="${btn.dataset.title || 'Chapter Video'}"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen></iframe>
+      </div>`;
+    card.appendChild(wrap);
+    wrap.querySelector('.iv-close').addEventListener('click', closeInlineVideo.bind(null, undefined));
+
+    // Player ko smoothly viewport me le aao
+    setTimeout(() => wrap.scrollIntoView({ behavior: 'smooth', block: 'center' }), 120);
   }
-  function closeVideoModal() {
-    videoModal.classList.remove('open');
-    videoFrame.src = '';
-    document.body.style.overflow = '';
-  }
-  videoModalClose.addEventListener('click', closeVideoModal);
-  videoModal.addEventListener('click', (e) => {
-    if (e.target === videoModal) closeVideoModal();
-  });
+
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeVideoModal();
+    if (e.key === 'Escape') closeInlineVideo();
   });
+
+  renderBatches();
 
   /* =========================================================
      WEEKLY TEST RESULT LOOKUP
